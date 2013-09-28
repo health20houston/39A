@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load hackpad %}
+{% block title %}{{ flatpage.title }}{% endblock title %}
+{% block og %}
+
+{% endblock %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2><a href='{{ flatpage.url }}'>{{ flatpage.title }}</a></h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="content" class="row">
+	
+	<div class="twelve columns">
+        {{ flatpage.content }}
+        {% if user.is_authenticated %}
+        <div id="hackpad" style="min-height:600px"></div>
+        <script src="https://hackpad.com/static/hackpad.js"></script>
+        <script>
+            hackpad.render_url('#hackpad', '{% hackpad padId='gather' fname=request.user.first_name|iriencode lname=request.user.last_name|iriencode email=request.user.email %}');
+        </script>
+        {% else %}
+        <div class="alert-box secondary">
+        Please login to view.
+        </div>
+        {% endif %}
+	</div>
+</div>
+{% endblock %}

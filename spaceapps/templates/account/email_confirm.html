@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load account %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Thanks!</h2>
+	</div>
+</header>
+{% endblock %}
+
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns">
+		{% if confirmation %}
+
+		{% user_display confirmation.email_address.user as user_display %}
+        
+		<p>Thanks for confirming your email address.</p>
+
+		{% comment %}
+		<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+		{% csrf_token %}
+		    <button type="submit" class="button">Select a Venue</button>
+		</form>
+		{% else %}
+		{% endcomment %}
+		
+		{% url 'account_email' as email_url %}
+		{% comment %}
+		<p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url}} ">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+		{% endcomment %}
+
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Challenges{% endblock title %}
+
+{% block main_classes %}
+class="header_img"
+{% endblock %}
+
+{% block content %}
+
+<header id="page_header" class="spacer row">
+	<img src="/static/images/5.png" alt="Challenges">
+	<div class="page_info twelve_columns">
+		<div class="page_title row">
+			<div class="twelve columns">
+				<h2>Challenges</h2>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<div class="row">
+			<div class="seven columns">
+				<br>
+
+				<p>The dynamic grid challenges page is the central location to engage teams in the needs of your mission. Each individual challenge page provides functionality for an image, hashtag, background content, challenge description, functional specifications, associated datasets and email service to contact the challenge owner. Each page is also set up for threaded comments via Disqus and an associated real-time wiki via Hackpad to enable collaborative engagement. Project (solution) pages can be initiated directly from challenge pages</p>
+				<p>Potential descriptive content here could also include:</p>
+			</div>
+			<div class="five columns">
+				<div class="video flex-video widescreen">
+					<iframe width="560" height="315" src="//www.youtube.com/embed/KaOC9danxNo" frameborder="0" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+		<h3>How do I choose a challenge?</h3>
+		<p>[Describe here how your participants will choose or be assigned to challenges]</p>
+		
+		<h3>How do I find a team?</h3>
+		<p>[How will collaboration happen?]</p>
+		
+		<h3>How will I submit a solution?</h3>
+		<p>[Describe your solution submission process.]</p>
+	
+		<div class="row">
+			<div class="eight columns offset-by-four">
+				<ul id="filters" class="challenge tabs pill">
+					<li class="active"><a href="#" data-filter="*">All</a></li>
+					<li><a href="#" data-filter=".software">Software</a></li>
+					<li><a href="#" data-filter=".hardware">Hardware</a></li>
+					<li><a href="#" data-filter=".citizen-science">Citizen Science</a></li>
+					<li><a href="#" data-filter=".data-visualization">Data Visualization</a></li>
+				</ul>
+			</div>
+		</div>
+	  	<ul id="challenge_array" class="block_array block-grid two-up mobile challenge_array">
+			{% for i in object_list %}
+		  		<li class="{{ i.category.slug }}">
+					<div class="main">
+						<a href="{% url 'challenges:view_challenge' i.slug %}"><img src="{% if i.image %}/media/{{ i.image }}{% else %}/static/images/default.jpg{% endif %}" alt="{{ i.title }}">
+						<h3>{{ i.title }}</h3></a>
+						{{ i.subtitle }}
+					</div>		
+				</li>
+			{% endfor %}
+	  	</ul>
+
+		{% comment %}
+		<ul>
+		
+		</ul>
+		{% endcomment %}
+	</div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script src="/static/js/jquery.isotope.min.js"></script>
+<script>
+// cache container
+var $container = $('#challenge_array');
+// initialize isotope
+$container.imagesLoaded( function(){
+  $container.isotope({
+    // options...
+  });
+});
+
+// filter items when filter link is clicked
+$('#filters a').click(function(){
+	$('#filters li').removeClass('active');
+	$(this).parent().addClass('active');
+	var selector = $(this).attr('data-filter');
+	$container.isotope({ filter: selector });
+	return false;
+});
+
+</script>
+{% endblock %}

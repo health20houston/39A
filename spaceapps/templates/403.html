@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<style type="text/css">
+		@-webkit-keyframes STAR-MOVE {
+			from {
+				background-position: 5% 5%
+			}
+			to { 
+				background-position: 1300% 600%
+			}
+		}
+		
+		@-webkit-keyframes STAR-MOVE-MID {
+			from {
+				background-position: 5% 1%
+			}
+			to { 
+				background-position: 1300% 100%
+			}
+		}
+		
+		@-webkit-keyframes STAR-MOVE-REVERSE {
+			from {
+				background-position: 1300% 600%
+			}
+			to { 
+				background-position: 5% 5%
+			}
+		}
+		
+		#background {
+			background: black url(/static/images/404/background.png) repeat 5% 5%;
+			position: absolute;
+			top: 0; left: 0; right: 0; bottom: 0;
+			z-index: 100;
+	
+			-webkit-animation-name: STAR-MOVE-REVERSE;
+			-webkit-animation-duration: 900s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+		}
+
+		#midground {
+			background: url(/static/images/404/midground.png) repeat 20% 20%;
+			position: absolute;
+			top: 0; left: 0; right: 0; bottom: 0;
+			z-index: 200;
+	
+			-webkit-animation-name: STAR-MOVE-MID;
+			-webkit-animation-duration: 600s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+		}
+
+		#foreground {
+			background: url(/static/images/404/foreground.png) repeat 35% 35%;
+			position: absolute;
+			top: 0; left: 0; right: 0; bottom: 0;
+			z-index: 300;
+	
+			-webkit-animation-name: STAR-MOVE;
+			-webkit-animation-duration: 400s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-iteration-count: infinite;
+		}
+		
+		body {
+			color:#fff;
+			font-family:sans-serif;
+		}
+		
+		#content {
+			z-index:999999999;
+			position:absolute;
+			width:100%;
+			left:0;
+			top:25%;
+			text-align:center;
+		}
+		
+		h1 {
+			color:#fff;
+			text-align:center;
+			font-size:4em;
+			margin-bottom:0;
+		}
+		
+		h1 em {
+			font-weight:700;
+		}
+		
+		.previous {
+			margin-top:15em;
+		}
+		
+		.previous {
+			font-size:0.75em;
+		}
+		
+		a {
+			color:#007cb9;
+			text-decoration:none;
+		}
+		a:hover {
+			color:#3287c1;
+		}
+	</style>
+</head>
+<body>
+	
+    <div id="background"></div>
+    <div id="midground"></div>
+    <div id="foreground"></div>
+
+	<!-- Add your site or application content here -->
+	<div id="content">
+		<h1>Houston, we have a problem</h1>
+		<p>(looks like something went wrong!)</p>
+		<a href="/">Go Back Home</a>
+			
+	</div>
+	
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/js/jquery-1.8.3.min.js"><\/script>')</script>
+
+</body>
+</html>

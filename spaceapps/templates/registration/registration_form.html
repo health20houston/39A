@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Choose a Venue{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Choose your Venue</h2>
+	</div>
+</header>
+{% endblock %}
+
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns venue_selection">
+		<form method='post' action=''>
+			<div class="row">                                                  
+			{% csrf_token %}                                                              
+        {% for i in form %}
+		  {{ i }}
+        {% endfor %}
+	</div>
+		<div class="row">
+		<input type='submit' class='button' value='Register'> 
+	</div>                          
+		</form> 
+	</div>
+</div>
+{% endblock %}

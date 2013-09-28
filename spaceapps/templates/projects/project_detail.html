@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load markup md5 disqushmac micawber_tags %}
+{% block title %}{{ object.title }}{% endblock title %}
+
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2><a href="{% url 'projects:view_project' object.slug %}">{{ object.title }}</a></h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		{% if request.user.is_staff %}
+		<div class="panel">
+			<h3>Super Secret Admin Features</h3>
+			<a href="/admin/projects/project/{{ object.id }}/">Edit this project</a><br>
+			<div class="row">
+				<div class="four columns hashtag">
+					<b>Hashtag</b>{% if object.hashtag %} <span class="success label">Set!</span><br>
+					#{{ object.hashtag }}
+					{% else %} <span class="secondary label">Not Set!</span><br>
+					No hashtag set!
+					{% endif %}
+				</div>
+				<div class="four columns finalist">
+					
+					<b><span class="has-tip" title="A project marked as qualifying for judging will appear in voting for people's choice awards and for NASA Finalist Selection">Judging</span></b>{% if not object.remove_from_judging %} <span class="success label">Qualifies!</span><br>
+					This project qualifies for judging and voting for people's choice awards.
+					{% else %}  <span class="secondary label">Doesn't qualify!</span><br>
+					This project has not been marked to qualify for judging and voting for people's choice awards.
+					{% endif %}
+				</div>
+				<div class="four columns field finalist">
+					<b><span class="has-tip" title="A project that is a finalist will appear in rounds for global judging">Finalist</span></b>{% if object.finalist %} <span class="success label">Yes it is!!</span><br>
+					This project has been marked as a finalist.
+					{% else %}  <span class="secondary label">Nope!</span><br>
+					This project has not been marked as a finalist.
+					{% endif %}
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				{% if not object.video %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a video.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.short_description %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a short overview.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.source_url %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a source URL.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.source_url_check_bypass %}
+				{% if not "github" in object.source_url %}
+				{% if not "bitbucket" in object.source_url %}
+				{% if not "code.google" in object.source_url %}
+				<div class="twelve columns">
+					<div class="alert-box">
+					  The source URL for this project may not actually be Source Code. You should double check it.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% endif %}
+				{% endif %}
+				{% endif %}
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="nine columns">
+				{% if object.video %}
+				<div class="flex-video widescreen {% if "vimeo" in object.video %}vimeo{% endif %}">
+					{{ object.video|oembed }}
+				</div>
+				{% endif %}
+				{% if object.short_description %}
+				<em>{{ object.short_description }}</em>
+				<br><br>
+				{% endif %}
+				{% if object.challenge %}
+				<p>This project is solving the <b><a href="{% url 'challenges:view_challenge' object.challenge.slug %}">{{ object.challenge }}</a></b> challenge.</p>
+				{% endif %}
+				{% if object.short_description %}
+				<hr>
+				<h3>Description</h3>
+				{% endif %}
+				{{ object.description|markdown:"safe" }}
+				<br>
+
+				<hr>
+				{% if object.source_url %}
+				{% else %}
+				<div class="alert-box secondary">
+				 This project has not yet submitted a Source Code/Project URL
+				</div>
+				{% endif %}
+				<h3>Project Information</h3>
+				{% if object.license %}
+					<b>License:</b> <a href='{{ object.license.url }}'>{{ object.license.name }}</a><br>
+				{% endif %}
+		
+				{% if object.source_url %}
+					<b>Source Code/Project URL:</b> <a href="{{ object.source_url }}">{{ object.source_url|oembed }}</a><br>
+				{% endif %}
+				<br>
+				<h4>Resources</h4>
+				{% for i in resources %}
+					<b>{{ i.title }}</b> - <a href="{{ i.url }}">{{ i.url }}</a><br>
+				{% endfor %}
+			</div>
+	
+			<div class="three columns">
+                {% comment %}
+                {% if not object.remove_from_judging %}
+				{% if object.hashtag %}
+				<h3>Vote</h3>
+				<a class="button success full" href="https://twitter.com/intent/tweet?text=I%20vote%20%23{{ object.hashtag|urlencode }}%20for%20%40spaceapps%20People%27s%20Choice%20Award!">Vote for this project on Twitter</a>
+				<span class="detail">Voting for Space Apps Challenge People's Choice projects takes place via Twitter. Simply send a tweet to <b><a href="http://twitter.com/spaceapps">@spaceapps</a></b> with the hashtag <b>#{{object.hashtag}}</b> (or click the green button above) to vote for this project!</span>
+				{% endif %}
+                {% endif %}
+                {% endcomment %}
+				{% for member in team %}
+					{% if member.user.email == request.user.email %}
+						<a href="{% url 'projects:edit' object.slug %}" class="button full">Edit Project</a>
+					{% endif %}
+				{% endfor %}
+				<h3>Team</h3>
+				<ul class="team block-grid three-up">
+					{% for i in team %}
+					<li>
+						<span class="has-tip avatar" title="{{ i.user.first_name }} {{ i.user.last_name }}"><img src="http://www.gravatar.com/avatar/{{ i.user.email|md5 }}?d=retro" alt="{{ i.user.first_name }} {{ i.user.last_name }}"></span>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<br>
+			<br>
+			<div class="twelve columns">
+				<div id="disqus_thread"></div>
+			  <script type="text/javascript">
+			  /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			  var disqus_config = function () {
+				  // The generated payload which authenticates users with Disqus
+				  this.page.remote_auth_s3 = '{% disqus_hmac userid=request.user.username  fname=request.user.first_name lname=request.user.last_name email=request.user.email %}';
+				  this.page.api_key = '';
+			  }
+			  var disqus_shortname = ''; // required: replace example with your forum shortname
+			  var disqus_identifier = '';
+			  /* * * DON'T EDIT BELOW THIS LINE * * */
+			  (function() {
+				  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+				  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+				  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			  })();
+			  </script>
+		  </div>
+	  </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+{% endblock %}

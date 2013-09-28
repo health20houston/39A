@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load micawber_tags %}
+
+{% block title %}Judging{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Project Judging</h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	<div class="twelve columns">
+       {% regroup object_list by category as by_category %}
+       {% for i in by_category %}
+	   	{% if not i.grouper.name %}
+			<h2>No Associated Category</h2>
+			<hr>
+		{% else %}
+			<h2>{{ i.grouper.name }}</h2>
+		{% endif %}
+		{% for i in i.list %}
+		<div class="row">
+			<div class="five columns">
+				<div class="flex-video widescreen {% if "vimeo" in i.video %}vimeo{% endif %}">
+					{{ i.video|oembed }}
+				</div>
+			</div>
+			<div class="seven columns">
+				<h4>#{{ i.hashtag }}</h4>
+				{{ i.short_description|truncatechars:503 }}<br><br>
+				<a class="button" href="{% url 'projects:view_project' i.slug %}" target="_blank">View this project</a>
+			</div>
+		</div>
+		<hr>
+		{% endfor %}
+	   {% endfor %}
+   </div>
+</div>
+{% endblock content %}

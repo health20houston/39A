@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Award Admin{% endblock title %}
+
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Awards Admin</h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<h3>Global Nominations</h3>
+		<a href="/awards/export/global">Download CSV Export</a>
+		<table class="twelve">
+		  <thead>
+		    <tr>
+		      <th>Project Title</th>
+			  <th>Location</th>
+			  <th>Hashtag</th>
+			  {% comment %}<th>Number of Team Members</th>{% endcomment %}
+		      <th>Globally Nominated</th>
+		      <th>Source Code</th>
+			  <th>Video</th>
+			  <th>Short Description</th>
+			  <th>Qualifies</th>
+			  <th>Finalist</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			  {% regroup nominations|dictsort:"location.city" by location as globalnomination %}
+			  {% for location in globalnomination %}
+			
+			  	{% for i in location.list %}
+					<tr>
+						<td><a href="{% url 'projects:view_project' i.project.slug %}">{{ i.project.title }}</a> (<a href="/admin/projects/project/{{ i.project.id }}/">edit</a>)</td>
+						<td><a href="{% url 'locations:detail' location.grouper.slug %}">{{ location.grouper.city }}</a></td>
+						<td>{% if i.project.hashtag %}<a target="_blank" href="https://twitter.com/search?q=%23{{ i.project.hashtag }}">#{{ i.project.hashtag }}</a>{% else %}<span class="alert label radius">Hashtag Not Set!</span>{% endif %}</td>
+						<td class="center"><span class="success label radius">Nominated</span></td>
+						<td class="center">{% if i.project.source_url %}{% if i.project.source_url_check_bypass %}<span class="success label radius"><a target="_blank" href="{{ i.project.source_url }}">Provided</a></span>{% elif "github" in i.project.source_url %}<span class="success label radius"><a target="_blank" href="{{ i.project.source_url }}">Provided</a></span>{% elif "bitbucket" in i.project.source_url %}<span class="success label radius"><a target="_blank" href="{{ i.project.source_url }}">Provided</a></span>{% elif "code.google" in i.project.source_url %}<span class="success label radius"><a target="_blank" href="{{ i.project.source_url }}">Provided</a></span>{% else %}<span class="label radius"><a target="_blank" href="{{ i.project.source_url }}"><span class="has-tip" title="This project may not be compliant with source guidelines. Double check to ensure they provided the raw work of their material">Check</span></a></span>{% endif %}{% else %}<span class="alert label radius">Not Provided</span>{% endif %}</td>
+						<td class="center">{% if i.project.video %}<span class="success label radius"><a target="_blank" href="{{ i.project.video }}">Provided</a></span>{% else %}<span class="alert label radius">Not Provided</span>{% endif %}</td>
+						<td class="center">{% if i.project.short_description %}<span class="success label radius has-tip" title="{{ i.project.short_description }}">Provided</span>{% else %}<span class="alert label radius">Not Provided</span>{% endif %}</td>
+						<td class="center">{% if not i.project.remove_from_judging %}<span class="success label radius">Yes!</a></span>{% else %}<span class="alert label radius has-tip" title="{{ i.project.reason_for_disqualification }}">No</span>{% endif %}</td>
+						<td class="center">{% if i.project.finalist %}<span class="success label radius">Yes!</a></span>{% else %}<span class="alert label radius">No</span>{% endif %}</td>
+						
+					</tr>
+				{% endfor %}
+			{% endfor %}
+
+				
+		  </tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
+
+{% regroup localawards|dictsort:"location.city" by location as awards %}
+{% for i in awards %}
+<h4>{{ i.grouper.city }}</h4>
+<b>Received Local Award</b><br>
+{% for i in i.list %}
+<em>{{ i.title }}</em> - <a href="{% url 'projects:view_project' i.project.slug %}">{{ i.project.title }}</a><br>
+{% endfor %}
+<hr>
+{% endfor %}

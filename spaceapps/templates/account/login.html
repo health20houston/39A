@@ -1,0 +1,43 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load url from future %}
+
+{% block title %}Sign In{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="twelve columns">
+		<h2>Sign In</h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	
+	<div class="six columns">
+		<p>You must have an account to proceed. Don't have an account?</p>
+		<a href="/account/signup" class="button large">Register Now</a>
+	</div>
+	<div class="six columns">
+		<div class="panel">
+		      <h4>Log In</h4>
+		      <form class="login custom" method="POST" action="{% url 'account_login' %}?next={% if request.path != "/account/login/" %}{{request.path}}{% else %}/locations/{% endif %}">
+		          {% csrf_token %}
+		          {{ form.as_p }}
+		          {% if redirect_field_value %}
+		          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+		          {% endif %}
+		          <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+		          <button class="button" type="submit">{% trans "Sign In" %}</button>
+		      </form>
+			  {% if redirect_field_value %}
+			  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+			  {% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

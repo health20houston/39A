@@ -1,0 +1,27 @@
+{% extends "socialaccount/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Account Inactive" %}{% endblock %}
+
+{% block content %}
+<header id="page_header" class="row">
+	<img src="" alt="">
+	<div class="page_info twelve_columns">
+		<div class="page_title row">
+			<div class="twelve columns">
+				<h2>{{ object.title }}</h2>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<h1>{% trans "Account Inactive" %}</h1>
+
+		<p>{% trans "This account is inactive." %}</p>
+	</div>
+</div>
+{% endblock %}

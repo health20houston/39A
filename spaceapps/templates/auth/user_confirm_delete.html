@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+Are you sure?
+<form method="POST" action="{{ request.get_full_path }}">
+  {% csrf_token %}
+  <input type="submit" value="Yes" />
+</form>
+<a href="/">No</a>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}You're in!{% endblock title %}
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Thanks!</h2>
+	</div>
+</header>
+{% endblock %}
+
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns">
+		{% if already_registered %}
+		<b>You are registered and confirmed to participate {% if object.location.name != "Virtual Participation" %}in {{ object.location.city }}, {{ object.location.get_country_display }}{% elif object.location.name == "Virtual Participation" %} as a Virtual Participant{% endif %}!</b>
+			<br>
+			<br>
+		
+		<div class="row">
+			<div class="ticket eight columns offset-by-two">
+				<div class="row">
+					<div class="three columns">
+						<img src=""  class="logo" alt="">
+					</div>
+					<div class="nine columns venue info">
+						{% if object.location.name %}
+						<h3>{{ object.location.name }}</h3>
+						{% endif %}
+						{% if object.location.name != "Virtual Participation" %}
+						{% if object.location.street %}
+						{{ object.location.street }}
+						{% endif %}
+						{% if object.location.street2 %}
+						<br>
+						{{ object.location.street2 }}
+						{% endif %}
+						{% if object.location.city %}
+						<br>
+						{{ object.location.city }}
+						{% endif %}
+						{% if object.location.state %}
+						, {{ object.location.state }}
+						{% endif %}
+						{% if object.location.country %}
+						<br>
+						{{ object.location.get_country_display }}
+						{% endif %}
+						{% endif %}
+					</div>
+				</div>
+				<div class="row participant">
+					<div class="twelve columns">
+						<div class="confirmed">
+							<span class="affirmation">Confirmed Participant</span>
+							<span class="name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}</span><br>{% endif %}{% if user.email %}<span class="email">{{ user.email }}</span><br>{% endif %}
+							Space Apps Challenge {% if object.location.city %}{{ object.location.city }}{% endif %}
+							{% if object.location.start %}<br>{{ object.location.start }}{% endif %}{% if object.location.end %} - {{ object.location.end }}{% endif %}
+							<div class="editreg">
+								<a href="{% url 'registration:edit' %}" class="button">Change Location</a>
+								<a href="{% url 'registration:delete' %}" class="button">Cancel Registration</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

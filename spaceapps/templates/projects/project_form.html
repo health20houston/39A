@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Project{% endblock title %}
+
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Edit Project</h2>
+	</div>
+</header>
+{% endblock %}
+
+
+{% block content %}
+{{ team_form.media.css }}
+<div id="content" class="row">
+	<div class="twelve columns">
+		
+		{% if request.user.is_staff %}
+		<div class="panel">
+			<h3>Super Secret Admin Features</h3>
+			<div class="row">
+				{% if not object.video %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a video.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.short_description %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a short overview.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.source_url %}
+				<div class="twelve columns">
+					<div class="alert-box alert">
+					  This project is missing a source URL.
+					  <a href="" class="close">&times;</a>
+					</div>
+				</div>
+				{% endif %}
+				{% if not object.source_url_check_bypass %}
+				{% if not "github" in object.source_url %}
+				{% if not "bitbucket" in object.source_url %}
+				{% if not "code.google" in object.source_url %}
+				<div class="twelve columns">
+					<div class="alert-box">
+					  The source URL for this project may not actually be Source Code. You should <a href="#source_url">double check it and bypass if needed.</a>
+					</div>
+				</div>
+				{% endif %}
+				{% endif %}
+				{% endif %}
+				{% endif %}
+			</div>
+			{% comment %}
+			<div class="row">
+				<div class="four columns field hashtag">
+					<label for="id_hashtag">Hashtag</label>
+				    <div class="row collapse">
+						<div class="one mobile-one columns">
+							<span class="prefix">#</span>
+						</div>
+						<div class="eleven mobile-three columns">
+							{{ form.hashtag }}
+						</div>
+					</div>
+					<span class="detail">The project hashtag should not include #.</span>
+					{{ form.hashtag.errors }}
+				</div>
+				<div class="eight columns field category">
+					<label for="id_category">Category</label>
+					{{ form.category }}
+					{{ form.category.errors }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="four columns field remove_from_judging">
+					<label for="id_remove_from_judging">Remove from judging?
+					{{ form.remove_from_judging }}</label>
+					{{ form.remove_from_judging.errors }}
+					<span class="detail">This project does not qualify for global judging and public voting.</span>
+				</div>
+				<div class="four columns end field finalist">
+					<label for="id_finalist">Finalist?
+					{{ form.finalist }}</label>
+					{{ form.finalist.errors }}
+					<span class="detail">Note: A project is a finalist if it has been promoted to the final round of judging. Projects do <b>not</b> need to be marked as finalists in order to qualify for public voting</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="eight columns field reason_for_disqualification">
+					<label for="id_reason_for_disqualification">Reason for disqualification</label>
+					{{ form.reason_for_disqualification }}
+					{{ form.reason_for_disqualification.errors }}
+				</div>
+			</div>
+			{% endcomment %}
+		</div>
+		{% endif %}
+		{% if object.remove_from_judging %}
+		{% if object.reason_for_disqualification %}
+		<div class="panel">
+			<h3>Oh no!</h3>
+			<p>Your project was nominated for a global award but you were disqualified due to the following:<br>
+				<br>
+				<em>{{ object.reason_for_disqualification }}</em></p>
+		</div>
+		<br>
+		{% endif %}
+		{% endif %}
+		<form class="custom project edit" method="post">
+			{% csrf_token %}
+			<div class="field title">
+				<label for="id_title">Title <span class="required">Required</span></label>
+				{{ form.title }}
+				{{ form.title.errors }}
+				{% if form.slug.errors %}<br><br>/project/{{ form.slug }}{% else %}<div class="inline"><div class="url">/project/{{ form.slug }}</div></div>{% endif %}
+				{{ form.slug.errors }}
+				<span class="detail">NOTE: If you change your project's URL, all existing links to your project will no longer work!</span>
+			</div>
+			
+			<div class="field challenge">
+				<label for="id_challenge">Challenge<br><span class="detail">If this project is in response to a specific <a href="/challenges">Challenge</a>, select it here.</span></label>
+				{{ form.challenge }}
+				{{ form.challenge.errors }}
+			</div>
+			
+			<div class="field license">
+				<label for="id_license">License <span class="required">Required</span><br><span class="detail">The license under which your work is released. All submissions must be licensed under an <a href="http://opensource.org/licenses/alphabetical">OSI Approved License</a> to be considered for judging.</span></label>
+				{{ form.license }}
+				{{ form.license.errors }}
+			</div>
+			
+			
+			<div class="field short_description">
+				<label for="id_short_description">Short Overview <span class="required">Required if nominated for global judging</span><br><span class="detail">Clearly describe your project in 500 characters or fewer.</span></label>
+				{{ form.short_description}}
+				<span class="charsLeft"></span>
+				{{ form.short_description.errors }}
+			</div>
+			
+			<div class="field description">
+				<label for="id_description">Description <span class="required">Required</span><br><span class="detail">An explaination of what your project aims to achieve, and how. This field takes <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">Markdown</a> for styling.</span></label>
+				{{ form.description}}
+				{{ form.description.errors }}
+			</div>
+			
+			<div class="field vidupload">
+				<label for="id_video">Video <span class="required">Required if nominated for global judging</span><br><span class="detail">Please include a link to a short, 2 minute video describing your work. This field should be a URL to YouTube or Vimeo, eg. <a href="http://www.youtube.com/watch?v=jmHgN9VE9OY">http://www.youtube.com/watch?v=jmHgN9VE9OY</a></span></label>
+				{{ form.video }}
+				{{ form.video.errors }}
+			</div>
+			
+			<div class="field source" id="source_url">
+				<label for="id_source_url">Source Code/Main Project URL <span class="required">Required</span><br><span class="detail">A URL to where the source code or main project may be found. If your project is software, this should be a link to the raw source code. <a href="http://www.github.com">GitHub</a> is the preferred location for all projects</span></label>
+				{{ form.source_url }}
+				{{ form.source_url.errors }}
+				{% if object.source_url %}
+				{% if not "github" in object.source_url %}
+				{% if not "bitbucket" in object.source_url %}
+				{% if not "code.google" in object.source_url %}
+				{% comment %}
+				<label for="id_source_url_check_bypass">{% if object.source_url_check_bypass %}Source URL check has been overriden. Uncheck to restore to normal operation{% else %}This project may not meet Source Code URL Requirements. Check to manually override:{% endif %} {{ form.source_url_check_bypass }}</label>{{ form.source_url_check_bypass.errors }}
+				{% endcomment %}
+				{% endif %}
+				{% endif %}
+				{% endif %}
+				{% endif %}
+								
+			</div>
+			
+			<div class="field">
+				<h3>Project Members</h3>
+				<p>You can add additional project members by searching for them <b>using the email address they have registered with</b> in this form.</p>
+				<div id="team">
+				{{ team_form.management_form }}
+					{% for form in team_form %}
+						<div class="member">
+							{{ form.as_p }}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			
+			<div class="field resources">
+				<h3>Resources</h3>
+				<p>You can add additional resources to your project as well. These may include presentations, source code, images, videos, etc. Simply provide a title and a URL</p>
+				{{ resource_form.management_form }}
+				{% for form in resource_form %}
+				<div class='resource'>
+				{{ form.as_p }}
+				</div>
+				{% endfor %}
+			</div>
+			<input type='submit' class='button' value='Submit'>
+		</form>	
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/jquery.sify.js"></script>
+<script>
+$('#id_slug').slugify('#id_title');
+</script>
+
+{% if request.user.is_staff %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+	reason_for_disqualification_hide();
+});
+
+$("div.remove_from_judging").click(function() {
+	$('div.reason_for_disqualification').toggle();
+});
+
+function reason_for_disqualification_hide() {
+	if ($('div.remove_from_judging span').hasClass('checked')) {
+		$("div.reason_for_disqualification").hide();
+	}
+	else if (!$('div.remove_from_judging span').hasClass('checked')){
+		$("div.reason_for_disqualification").show();
+	}
+}
+</script>
+{% endif %}
+<script src='/static/js/jquery.formset.min.js'></script>
+<script type="text/javascript">
+  $(function() {
+    $('.member').formset({ 
+      prefix: '{{ team_form.prefix }}',
+      added: function(row) {
+                    bindSelectables( $(row) );}
+    }); 
+    $('.resource').formset({ 
+      prefix: '{{ resource_form.prefix }}' 
+    }); 
+  })
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('a.add-row').addClass('button');
+});
+  
+</script>
+<script>
+function updateCountdown() {
+    var remaining = 500 - jQuery('#id_short_description').val().length;
+    jQuery('.charsLeft').text(remaining + ' characters remaining.');
+	if (remaining<0) {
+		jQuery('.charsLeft').css("color", "red");
+	}
+	else {
+		jQuery('.charsLeft').removeAttr('style');
+	}
+}
+jQuery(document).ready(function($) {
+    updateCountdown();
+    $('#id_short_description').change(updateCountdown);
+    $('#id_short_description').keyup(updateCountdown);
+});
+</script>
+{{ team_form.media.js }}
+{% endblock %}

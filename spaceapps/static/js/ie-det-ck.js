@@ -1,0 +1,1 @@
+(function(){"use strict";var e=3,t=document.createElement("div");do t.innerHTML="<!--[if gt IE "+ ++e+"]><i></i><![endif]-->";while(t.getElementsByTagName("i"));window.IE=e>4?e:!1})();

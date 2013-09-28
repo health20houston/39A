@@ -1,0 +1,48 @@
+from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
+
+from .views import (
+    List,
+    Detail,
+    VoteBox,
+    Judging,
+    Create,
+    Edit,
+    Delete,
+    )
+
+
+urlpatterns = patterns('',
+    url(r'^$',
+        List.as_view(),
+        name='list',
+        ),
+    url(r'^(judging)/$',
+        Judging.as_view(),
+        name='judging',
+        ),
+    url(r'^create/(?P<slug>[-_\w]+)?$',
+        Create.as_view(),
+        name='create',
+        ),
+    url(r'^(?P<slug>[-_\w]+)/join$',
+        Detail.as_view(),
+        name='view_project',
+        ),
+    url(r'^(?P<slug>[-_\w]+)/votebox$',
+        VoteBox.as_view(),
+        name='vote_box',
+        ),
+    url(r'^(?P<slug>[-_\w]+)/$',
+        Detail.as_view(),
+        name='view_project',
+        ),
+    url(r'^(?P<slug>[-_\w]+)/edit$',
+        Edit.as_view(),
+        name='edit',
+        ),
+    url(r'^(?P<slug>[-_\w]+)/delete$',
+        Delete.as_view(),
+        name='delete',
+        ),
+    )

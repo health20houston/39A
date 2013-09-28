@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{flatpage.title}}{% endblock title %}
+
+{% block og %}
+
+{% endblock %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2><a href='{{ flatpage.url }}'>{{ flatpage.title }}</a></h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="content" class="row">
+	<div class="two columns">
+		<ul class="four side-nav">
+		  <li class="active"><a href="/about">About {{ request.get_full_path }}</a></li>
+		  <li><a href="#">Link 2</a></li>
+		  <li><a href="#">Link 3</a></li>
+		  <li><a href="#">Link 4</a></li>
+		</ul>
+	</div>
+	<div class="ten columns">
+		{{ flatpage.content }}
+	</div>
+</div>
+{% endblock %}

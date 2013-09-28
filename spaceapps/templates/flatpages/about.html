@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ flatpage.title }}{% endblock title %}
+
+{% block og %}
+
+{% endblock %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2><a href='{{ flatpage.url }}'>{{ flatpage.title }}</a></h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div id="content" class="row">
+	<div class="two columns">
+		<ul class="three side-nav">
+		  <li {% if request.get_full_path == '/about/' %}class="active"{% endif %}><a href="/about">About</a></li>
+		  <li {% if request.get_full_path == '/about/faq/' %}class="active"{% endif %}><a href="/about/faq">FAQ</a></li>
+		  <li {% if request.get_full_path == '/about/timeline/' %}class="active"{% endif %}><a href="/about/timeline">Timeline</a></li>
+		  <li {% if request.get_full_path == '/about/judging/' %}class="active"{% endif %}><a href="/about/judging">Judging</a></li>
+		  <li {% if request.get_full_path == '/about/story/' %}class="active"{% endif %}><a href="/about/story">Story</a></li>
+		  <li {% if request.get_full_path == '/about/partners/' %}class="active"{% endif %}><a href="/about/partners">Partners</a></li>
+		  <li {% if request.get_full_path == '/about/press/' %}class="active"{% endif %}><a href="/about/press">Press</a></li>
+		  <li {% if request.get_full_path == '/about/contact/' %}class="active"{% endif %}><a href="/about/contact">Contact</a></li>
+		  
+		</ul>
+	</div>
+	<div class="ten columns">
+		{{ flatpage.content }}
+	</div>
+</div>
+{% endblock %}

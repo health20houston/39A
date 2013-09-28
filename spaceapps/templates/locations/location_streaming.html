@@ -1,0 +1,7 @@
+<div class="{{ object.slug }} {% for i in object.resource_set.all %}{% if i.name == "Ustream" %}streaming{% endif %}{% endfor %} flex-video">
+	 {% for i in object.resource_set.all %}
+	 {% if i.name == "Ustream" %}
+	<iframe src="http://www.ustream.tv/embed/{{ i.url }}" width="608" height="368" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe><br /><a href="http://www.ustream.tv/producer" style="padding: 2px 0px 4px; width: 400px; background: #ffffff; display: block; color: #000000; font-weight: normal; font-size: 10px; text-decoration: underline; text-align: center;" target="_blank">Free desktop streaming application by Ustream</a>
+	{% endif %}
+	{% endfor %}
+</div>

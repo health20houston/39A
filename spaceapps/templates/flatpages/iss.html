@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}International Space Station{% endblock title %}
+
+{% block og %}
+<meta property="og:title" content="International Space Apps Challenge - Space Station" />
+<meta property="og:image" content="http://spaceappschallenge.org/static/images/iss.jpg" />
+<meta property="og:url" content="http://spaceappschallenge.org/location/iss }}" />
+<meta property="og:description" content="The International Space Station (ISS) is a habitable artificial satellite in low Earth orbit. The ISS serves as a microgravity and space environment research laboratory in which crew members conduct experiments in biology, human biology, physics, astronomy, meteorology and other fields. The station is suited for the testing of spacecraft systems and equipment required for missions to the Moon and Mars." />
+{% endblock %}
+
+
+{% block header_loader %}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
+<![endif]-->
+
+<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+{% endblock header_loader %}
+
+{% block main_classes %}
+class="header_img"
+{% endblock %}
+
+
+{% block content %}
+
+<header id="page_header" class="row">
+	<img src="/static/images/iss.jpg" alt="International Space Station">
+	<div class="page_info twelve_columns">
+		<div class="page_title row">
+			<div class="twelve columns">
+				<h2>Low Earth Orbit</h2>
+			</div>
+		</div>
+		<div class="location_details row">
+			<div class="twelve columns venue">
+				International Space Station
+			</div>
+		</div>
+	</div>
+</header>
+
+
+
+<div class="row location info" id="content">
+	<div class="twelve columns">
+		<div class="row">
+			<div class="eight columns" itemprop="description">
+				{{ flatpage.content }}
+			</div>
+			<div class="four columns location details">
+				<a class="button register full capacity" href="https://www.usajobs.gov/GetJob/PrintPreview/302967000">Apply to Attend</a>
+				<div id="map" style="height: 200px; width:100%;margin-bottom:1em;margin-top:1em;"></div>
+				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+					<h3>Location</h3>
+					<b>International Space Station</b>
+					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+						Low Earth Orbit
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script type="text/javascript">
+	var cloudmadeUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg';
+	var subDomains = ['otile1','otile2','otile3','otile4'];
+	var cloudmade = new L.TileLayer(cloudmadeUrl, {subdomains: subDomains});
+	var center = new L.LatLng(-2.10, 13);
+	var map = new L.Map('map', {center:center, zoom: 4, layers : [cloudmade]});
+				
+				
+    var iss
+        , timeElapsed = 0;
+
+   function update_position() {
+       elapsedTime = new Date().getMilliseconds();
+
+       $.getJSON('//open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
+           var latitude = data["data"]["iss_position"]["latitude"];
+           var longitude = data["data"]["iss_position"]["longitude"];
+
+           elapsedTime = new Date().getMilliseconds() - elapsedTime;
+					   
+		   var issIcon = L.icon({
+		       iconUrl: '/static/images/spacestation_icon.png',
+
+		       iconSize:     [105, 74], // size of the icon
+		       iconAnchor:   [50, 37], // point of the icon which will correspond to marker's location
+		       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		   });
+					   
+           if (!iss) {
+               iss = L.marker([latitude,longitude], {icon: issIcon}).addTo(map);
+           }
+           iss.setLatLng([latitude,longitude]).update();
+		   map.panTo([latitude,longitude], 4);
+           setTimeout(update_position, 1000 - elapsedTime);
+       });
+   }
+
+   update_position();
+	map.attributionControl.setPrefix('');
+</script>
+{% endblock %}

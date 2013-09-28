@@ -1,0 +1,13 @@
+{% load micawber_tags %}
+<div class="row">
+	<div class="vid">
+		<div class="flex-video widescreen {% if "vimeo" in object.video %}vimeo{% endif %}">
+			{{ object.video|oembed }}
+		</div>
+	</div>
+	<div class="text">
+		<h2>#{{ object.hashtag }}</h2>
+		<p>{{ object.short_description|truncatechars:503 }} <a href="{% url 'projects:view_project' object.slug %}">read more</a></p>
+		<a class="button success large" href="">Vote Now</a> <a class="button secondary large" id="next_project" href="#">Next Project</a>
+	</div>
+</div>

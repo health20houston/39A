@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Location{% endblock title %}
+
+{% block content %}
+{{ lead_form.media.css }}
+<div id="content" class="location row uncontain">
+	<div class="twelve columns">
+	<dl class="tabs contained">
+	  <dt>{{ location.city }}</dt>
+	  <dd class="active"><a href="#overview">Overview</a></dd>
+	  <dd><a href="#edit">Edit Information & Awards</a></dd>
+	  <dd><a href="#attendees">View Attendees</a></dd>
+	  <dd><a href="/location/{{ location.slug }}">View Location Page</a></dd>
+	</dl>
+	<div class="row">
+	<ul class="tabs-content contained backfill twelve columns">
+	  <li class="active" id="overviewTab">
+		  <h2 class="welcome">Hi, {{ request.user.first_name }}!</h3>	
+		  <p><b>{{ location.city }} currently has <span class="registrants_number">(loading)</span> registrants.</b><br></p>
+		  <hr>
+		  <div class="row">
+			  <div class="twelve columns">
+				  <div class="radius progress  {% if location.is_full %}alert{% else %}success{% endif %} eight" id="registrant_progress"><span class="meter"></span></div>
+				  <b>Current Registrations (<span class="registrants_number">(loading)</span>/{{ location.capacity }})</b><br>
+				  Registration is currently {% if not location.open %}<b>closed</b>{% elif location.is_full %}<b>sold out</b>{% elif location.open %}<b>open</b>{% endif %}
+				  {% if location.is_full %}<p><br><span class="alert label">Waitlist Information</span><br>A waitlist has been created for your venue. <b>This list does not update automatically</b>. Once you have raised the maximum capacity of your venue, <a href="/location/{{ location.slug }}/waitlist">click here</a> to download a CSV file of the email addresses of every person on the waitlist. You will then need to email them and notify them that additional spots are available!</p>{% endif %}
+	  </li>
+	  <li id="editTab" class="location edit">
+  		<form enctype="multipart/form-data" method='post' action='' class="custom">
+  		{% csrf_token %}
+  			<div class="field noinput">
+  			 {{ form.name.errors }}
+  			 <div class="noinput_detail"><span class="loc_name">{{ location.name }}</span>{{form.name }}</div>
+  			 
+  		 </div>
+		 
+		 
+   		<div class="field slug noinput">
+  			{{ form.slug.errors }}
+  			<label for="id_slug">Page URL:</label>
+  		 <div class="noinput_detail"><a href="/{{ location.slug }}">/location/{{ location.slug }}</a>{{form.slug }}</div>
+  	 </div>
+		 
+  		 <h3>Venue Details</h3>
+		 
+  		<div class="field image_upload">
+  			 {{ form.image.errors }}
+  			 <label for="id_image">Header Image <i>(1000px wide, 425px tall. Please ensure you have rights to use and that the image is optimized for file size!)</i>:</label>
+  			 {{ form.image }}
+  		 </div>
+			 
+   		<div class="field">
+   			 {{ form.description.errors }}
+   			 <label for="id_name">Venue Description:</label>
+  			 <div id="wysihtml5-toolbar" style="display: none;">
+  				 <div id="toolbar-styling" class="eight columns">
+  					 <a data-wysihtml5-command="bold"><i class="icon-bold"></i> bold</a>
+  					 <a data-wysihtml5-command="italic"><i class="icon-italic"></i> italic</a>
+  					 <a data-wysihtml5-command="insertOrderedList"><i class="icon-list-ol"></i> insert ordered list</a>
+  					 <a data-wysihtml5-command="insertUnorderedList"><i class="icon-list-ul"></i> insert unordered list</a>
+  					 <a data-wysihtml5-command="createLink"><i class="icon-link"></i> insert link</a>
+  					 <div data-wysihtml5-dialog="createLink" style="display: none;">
+  						 <label>
+  							 Link:
+  							 <input data-wysihtml5-dialog-field="href" value="http://" class="text">
+  						 </label>
+  						 <a data-wysihtml5-dialog-action="save">OK</a> <a data-wysihtml5-dialog-action="cancel">Cancel</a>
+  					 </div>
+  				 </div>
+  				 <div class="two columns offset-by-two">
+  					 <a data-wysihtml5-action="change_view" href="javascript:;" unselectable="on" class="wysihtml5-action-active" id="htmlswitch">switch to html</a>
+  				 </div>
+  			 </div>
+  			 {{ form.description }}
+  		 </div>
+		 
+		 
+  		 <h3>Venue Location</h3>
+		 
+    		<div class="field">
+    			 {{ form.street.errors }}
+    			 <label for="id_street">Venue Street:</label>
+    			 {{ form.street }}
+  			  {{ form.street2.errors }}
+    			 <label for="id_street2">Venue Street Line 2:</label>
+    			 {{ form.street2 }}
+  			 <div class="row">
+  				 <div class="six columns">
+  					  {{ form.city.errors }}
+  		  			 <label for="id_street">City:</label>
+  		  			 {{ form.city }}
+  				 </div>
+  				 <div class="three columns">
+  					  {{ form.state.errors }}
+  		  			 <label for="id_state">State or Province:</label>
+  		  			 {{ form.state }}
+  				 </div>
+  				 <div class="three columns">
+  					  {{ form.postal.errors }}
+  		  			 <label for="id_postal">Postal Code:</label>
+  		  			 {{ form.postal }}
+  				 </div>
+  			 </div>
+  			 <div class="row">
+  				 <div class="four columns">
+  					  {{ form.country.errors }}
+  		  			 <label for="id_country">Country:</label>
+  		  			 {{ form.country }}
+  				 </div>
+  				 <div class="two columns">
+  					  {{ form.continent.errors }}
+  		  			 <label for="id_continent">Continent:</label>
+  		  			 {{ form.continent }}
+  				 </div>
+  		  		<div class="six columns">
+  		  			 {{ form.timezone.errors }}
+  		  			 <label for="id_timezone">Timezone:</label>
+  		  			 {{ form.timezone }}
+  		  		 </div>
+  			 </div>
+  			 <div class="row">
+  				 <div class="three columns">
+  					  {{ form.lat.errors }}
+  		  			 <label for="id_lat">Latitude <i>(decimal format)</i>:</label>
+  		  			 {{ form.lat }}
+  				 </div>
+  				 <div class="three columns end">
+  					  {{ form.lon.errors }}
+  		  			 <label for="id_lon">Longitude <i>(decimal format)</i>:</label>
+  		  			 {{ form.lon }}
+  				 </div>
+  			 </div>
+    		 </div>
+		
+		 
+  		 <h3>Event Information</h3>
+		 
+  		 <div class="field row">
+  			 <div class="four columns end">
+  				  {{ form.capacity.errors }}
+  	  			 <label for="id_capacity">Maximum Capacity (registration limit):</label>
+  	  			 {{ form.capacity }}
+  			 </div>
+  		 </div>
+		 
+  		 <div class="field row">
+  			 <div class="four columns end">
+  				  {{ form.open.errors }}
+  		         <label for="id_open">{{ form.open }}<span class="custom checkbox"></span> Open for Registration</label>
+  				 <a href="/location/{{ location.slug }}/attendees">See list of Current Attendees</a>
+  			 </div>
+  		 </div>
+		 
+		 <div class="field row">
+			 
+		 </div>
+		 
+  		 <h3>Sponsors</h3>
+		 <p>Please ensure you have rights to use and that the image is optimized for file size!</p>
+  		 <div class="sponsors">
+  			{{ sponsor_form.management_form }}
+  				{% for form in sponsor_form %}
+  					<div id='sponsor' class='sortable'>
+  						{{ form.as_p }}
+  					</div>
+  					{% endfor %}
+  		</div>
+		
+		
+  	 <h3>Leads</h3>
+
+	 <p><b>Curious why your avatar isn't appearing?</b> Associate your email address with <a href="http://gravatar.com">Gravatar</a>!</p>
+  	 <div class="leads" style="display:none;">
+  		 {{ lead_form.management_form }}
+  		 {% for form in lead_form %}
+  		 <div id='lead'>
+  			 {{ form.as_p }}
+  		 </div>
+  			{% endfor %}
+  	</div>
+
+
+  <p>You may create an unlimited number of Local Awards (for instance, 1st Place, Best use of Data, etc), and select two projects to forward on to Global Judging.</p>
+	<h3>Local Awards</h3>
+	{{ localaward_form.management_form }}
+	<div class="localaward_form">
+	{% for form in localaward_form %}
+		<div class="localaward">
+			{{ form.as_p }}
+		</div>
+	{% endfor %}
+	</div>
+	
+	<h3>Global Nomination</h3>
+	{{ nomination_form.management_form }}  
+	<div class="globalnom_form">                                     
+	{% for form in nomination_form %}                                           
+		<div class="nomination">                                                       
+			{{ form.as_p }}                                                           
+		</div>                                                                      
+    {% endfor %}
+	</div>
+	
+	
+  	<h3>Resources</h3>
+	<p>You can name URLs "Twitter", "Facebook", or "Blog" to enable special features </p>
+  	<div class="resources">
+  		{{ resource_form.management_form }}
+  		{% for form in resource_form %}
+  			<div id='resource'>
+  		{{ form.as_p }}
+  			</div>
+  		{% endfor %}
+  	</div>
+  		<input type='submit' class='button' value='Submit'>
+  		</form>
+	  </li>
+	  <li id="attendeesTab">
+		  <div id="attendees_table">Loading</div>
+		  <p><a href="/location/{{ location.slug }}/csv">Download as CSV file</a></p>
+	  </li>
+	</ul>
+</div>
+</div>
+</div><!-- #content -->
+
+<script src='/static/js/jquery.formset.min.js'></script>
+<script src='/static/js/jquery.sortable.min.js'></script>
+<script type="text/javascript">
+  $(function() {
+    $('#sponsor').formset({ 
+      prefix: '{{ sponsor_form.prefix }}' 
+    }); 
+    $('#lead').formset({
+      prefix: '{{ lead_form.prefix }}',
+      added: function(row) {
+                        bindSelectables($(row));
+                }
+    });
+    $('.localaward').formset({ 
+      prefix: '{{ localaward_form.prefix }}' 
+    }); 
+    $('#resource').formset({ 
+      prefix: '{{ resource_form.prefix }}' 
+    }); 
+  })
+</script>
+<script>
+    $('.sortable').sortable();
+</script>
+{{ lead_form.media.js }}
+{% endblock %}
+
+{% block js %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#htmlswitch").click(function () {
+			      $("textarea#id_description").toggleClass("html");
+				  $("#toolbar-styling").toggle();
+			    });
+		});
+	</script>
+	<script>
+	  $(document).ready(function() {
+	      $('span.registrants_number').load('/locations/{{ location.slug }}/attendees td.count:last span', function(result) {
+			  var registrants = $('span.registrants_number:first').text();
+			  var total_spots = '{{ location.capacity}}';
+			  var bar_width = (registrants / total_spots) * 100;
+			  var bar_width_percent = bar_width + '%';
+			  $('#registrant_progress span.meter').css("width",bar_width_percent);
+	      });
+	  });
+	</script>
+	<script type="text/javascript">
+	  $(document).ready(function() {
+	      $('#attendees_table').load('/locations/{{ location.slug }}/attendees table');
+	  });
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('a.add-row,a.delete-row').addClass('button');
+  });
+	  
+	</script>
+	<script type="text/javascript">
+	  $("div.sponsors div").click(function() {
+		  if ( !$(this).find('p:nth-of-type(4) input').val() )  {
+		 	 var number_of_sponsors = $('div.sponsors div').length;
+			 $(this).find('p:nth-of-type(4) input').val(number_of_sponsors);
+		 }
+		 else {
+			 return;
+		 }
+	  });
+	  
+	</script>
+	
+	<script src="/static/js/wysihtml5/advanced.js"></script>
+	<script src="/static/js/wysihtml5/wysihtml5-0.3.0.min.js"></script>
+	<script>
+	var editor = new wysihtml5.Editor("id_description", { // id of textarea element
+	  toolbar:      "wysihtml5-toolbar", // id of toolbar element
+	  parserRules:  wysihtml5ParserRules // defined in parser rules set 
+	});
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var header_image = $("div.image_upload a").attr("href");
+	  	$("label[for='id_image']").after("<img src='" + header_image +"' alt='Header Image'>");
+		$("div.image_upload a").after("<br>");
+		$("#id_image").live("change", function(){
+			$('div.image_upload img').remove();
+			$("label[for='id_image']").after("<div class='alert-box secondary'>Save the form to view your upload image.</div>");
+		});
+	});
+	</script>
+{% endblock %}

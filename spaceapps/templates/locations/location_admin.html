@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% comment %}
+
+<h3>Location</h3>
+
+<p>{{ location.name }}</p>
+<p>{{ location.description }}</p>
+<p>{{ location.city }}</p>
+<p>{{ location.capacity }}</p>
+
+<h3>Registered Attendees</h3>
+
+{% for i in attendees %}
+<p>{{ i.user }}</p>
+{% endfor %}
+
+<h3>Location Leads</h3>
+
+{% for i in leads %}
+<p>{{ i.lead }}</p>
+{% endfor %}
+
+<h3>Location Sponsors</h3>
+
+{% for i in sponsors %}
+<p>{{ i }}</p>
+{% endfor %}
+
+<h3>Location Resources</h3>
+
+{% for i in resources %}
+<p>{{ i }}</p>
+{% endfor %}
+

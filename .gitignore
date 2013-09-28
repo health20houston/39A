@@ -1,0 +1,7 @@
+db
+*.pyc
+*.swp
+.DS_Store
+_build
+media/*
+spaceapps/static/.sass-cache

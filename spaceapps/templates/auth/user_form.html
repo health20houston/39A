@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ lead_form.media.css }}
+<div id="content" class="row">
+	<div class="twelve columns">
+		<form enctype="multipart/form-data" method='post' action=''>
+		{% csrf_token %}
+		{{ form.as_p }}
+		{{ profile_form.management_form }}
+		{% for form in profile_form %}
+			<div id='sponsor' class='sortable'>
+		{{ form.as_p }}
+			</div>
+		{% endfor %}
+		{{ lead_form.management_form }}
+		{% for form in lead_form %}
+			<div id='lead'>
+		{{ form.as_p }}
+			</div>
+		{% endfor %}
+		{{ resource_form.management_form }}
+		{% for form in resource_form %}
+			<div id='resource'>
+		{{ form.as_p }}
+			</div>
+		{% endfor %}
+		<input type='submit' class='button' value='Submit'>
+		</form>
+	</div><!-- 12 columns -->
+</div><!-- #content -->
+<script src='/static/js/jquery.formset.min.js'></script>
+<script src='/static/js/jquery.sortable.min.js'></script>
+<script type="text/javascript">
+  $(function() {
+    $('#sponsor').formset({ 
+      prefix: '{{ sponsor_form.prefix }}' 
+    }); 
+    $('#lead').formset({
+      prefix: '{{ lead_form.prefix }}',
+      added: function(row) {
+                        bindSelectables($(row));
+                }
+    });
+    $('#resource').formset({ 
+      prefix: '{{ resource_form.prefix }}' 
+    }); 
+  })
+</script>
+<script>
+    $('.sortable').sortable();
+</script>
+{{ lead_form.media.js }}
+{% endblock %}

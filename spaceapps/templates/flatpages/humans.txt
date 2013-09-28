@@ -1,0 +1,33 @@
+INTERNATIONAL SPACE APPS CHALLENGE
+http://spaceappschallenge.org
+                            
+/* TEAM */
+
+Project Manager: Sean Herron
+Site: seanherron.com / sean.herron@nasa.gov
+Twitter: @seanherron
+Location: Washington, DC, USA
+
+Backend Genius: William Eshagh
+Site: eshagh.com
+Twitter: @eshagh
+Location: Mountain View, CA, USA
+                 
+                        [...]
+						
+/* THANKS */
+
+Ali Llewellyn, Space Apps Challenge Project Manager
+Nick Skytland, NASA Open Innovation Program Manager
+						
+                 
+                        [...]
+                            
+/* SITE */
+Last update: 2013/04/02
+                            
+Standards: HTML5, CSS3
+                           
+Components: Modernizr, jQuery, Leaflet
+
+Software: Vim, Textmate, Codekit, Sass, Compass, Zurb Foundation

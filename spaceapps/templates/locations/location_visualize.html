@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8" />
+	
+	<title>Visualize 
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="Sean Herron">
+		
+
+	<!-- Included CSS Files -->
+	<link rel="stylesheet" href="/static/stylesheets/app.css">
+	
+	<script src="/static/javascripts/foundation/modernizr.foundation.js"></script>
+	<script data-cfasync="false" type="text/javascript" src="//use.typekit.net/djk2xfu.js"></script>
+	<script data-cfasync="false" type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	
+    <!-- Included JS Files (Compressed) -->
+    <script src="/static/javascripts/foundation/jquery.js"></script>
+    <script src="/static/javascripts/foundation/foundation.min.js"></script>
+  
+    <!-- Initialize JS Plugins -->
+    <script src="/static/javascripts/foundation/app.js"></script>
+    <style type="text/css">
+         html { height: 100% }
+         body { height: 100%; margin: 0; padding: 0; }
+         #map-canvas { height: 100% }
+       </style>
+       <script type="text/javascript"
+         src="//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=">
+       </script>
+       <script src="http://www.daylightmap.com/daylight_packed.js"
+                 type="text/javascript"></script>
+	 <script type="text/javascript">
+	     var map;
+		 function initialize() {
+		      if (GBrowserIsCompatible()) {
+				  var map_options = {
+					  backgroundColor: '#000000'
+				  }
+		        map = new GMap2(document.getElementById("map_canvas"), map_options);
+				var daylight = new daylightMap.daylightLayer();
+				daylight.addToMap(map);
+		        map.setCenter(new GLatLng(0, 0), 3);
+		        map.setUIToDefault();
+				map.setMapType(G_SATELLITE_MAP);
+				
+				
+				
+				var location_point = new GLatLng(12.5, -10.5);
+				var location_id = 'location'
+				map.addOverlay(new GMarker(location_point, location_id));
+				
+				
+				var iss
+				, timeElapsed = 0;
+	
+				function update_position() {
+					elapsedTime = new Date().getMilliseconds();
+					$.getJSON('http://open-notify-api.herokuapp.com/iss-now.json?callback=?',
+					function(data) {
+						var latitude = data["data"]["iss_position"]["latitude"];
+						var longitude = data["data"]["iss_position"]["longitude"];
+						elapsedTime = new Date().getMilliseconds() - elapsedTime;
+		   
+					   if (!iss) {
+						   var issIcon = new GIcon(G_DEFAULT_ICON);
+						   issIcon.image = "/static/images/spacestation_icon.png";
+						   issIcon.shadow = null;
+						   iss_options = { icon:issIcon};
+						   var iss_point = new GLatLng(latitude, longitude);
+						   var iss = new GMarker(iss_point, iss_options);
+						   map.addOverlay(iss);
+					   }
+					   else {
+						   var iss_point = GLatLng(latitude, longitude);
+						   //iss.setPoint(iss_point);
+						   iss.setLatLng(iss_point);
+					   }
+					   //var iss_point = GLatLng(latitude, longitude);
+					   //iss.setPoint(iss_point);
+			           //iss.setLatLng(iss_point);
+					   setTimeout(update_position, 1000 - elapsedTime);
+				   });
+				}
+				update_position();
+		      }
+		    }
+	     </script>
+    
+
+	<!-- Fav and touch icons -->
+	<link rel="shortcut icon" href="/static/images/favicon.ico">
+							
+</head>
+
+<body onload="initialize()" onunload="GUnload()">
+	<div id="visualize">
+		<div id="map_canvas" style="width: 100%; height: 100%"></div>
+		<button class="button" id="btn_fullscreen" onclick="goFullscreen('map_canvas'); return false"><i class="icon-fullscreen"></i></button>
+	</div>
+	
+		<script type="text/javascript">
+	  function goFullscreen(id) {
+	    // Get the element that we want to take into fullscreen mode
+	    var element = document.getElementById(id);
+    
+	    // These function will not exist in the browsers that don't support fullscreen mode yet, 
+	    // so we'll have to check to see if they're available before calling them.
+    
+	    if (element.mozRequestFullScreen) {
+	      // This is how to go into fullscren mode in Firefox
+	      // Note the "moz" prefix, which is short for Mozilla.
+	      element.mozRequestFullScreen();
+	    } else if (element.webkitRequestFullScreen) {
+	      // This is how to go into fullscreen mode in Chrome and Safari
+	      // Both of those browsers are based on the Webkit project, hence the same prefix.
+	      element.webkitRequestFullScreen();
+	   }
+	   // Hooray, now we're in fullscreen mode!
+	  }
+	</script>
+	</body>
+	</html>

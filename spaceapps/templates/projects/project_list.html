@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load md5 markup %}
+
+{% block title %}Projects{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Projects</h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<div class="row">
+			<div class="seven columns">
+				<br>
+				<p>This page indexes each project currently being worked on. You can click the button below to create your own.</p>
+				<a href="{% url 'projects:create' %}" class="button">Create Project</a>
+			</div>
+			<div class="five columns">
+				<div class="video flex-video widescreen">
+					<iframe width="560" height="315" src="//www.youtube.com/embed/KaOC9danxNo" frameborder="0" allowfullscreen=""></iframe>
+				</div>
+			</div>
+		</div>
+		
+	    {% if request.user.is_authenticated %}
+	     <h3>My Projects</h3>
+	     <ul>
+	       {% for i in user_projects %}
+	       <a href="{% url 'projects:view_project' i.project.slug %}"><li>{{ i.project.title.title }}</li></a>
+	       {% endfor %}
+	     </ul>
+	     {% endif %}
+		 <br>
+     <hr>
+     <h3>Project by Challenge</h3>
+     <ul class="accordion">
+       {% regroup object_list by challenge as by_challenge %}
+       {% for i in by_challenge %}
+       <li>
+       <div class='title'>
+         <h3> {% if not i.grouper.title %}
+           No Associated Challenge
+           {% else %}
+           {{ i.grouper.title.title }} 
+           {% endif %}</h3>
+       </div>
+     <div class='content'>
+     <ul>
+       {% for i in i.list %}
+       <li><a href="{% url 'projects:view_project' i.slug %}">{{ i.title.title }}</a></li>
+       {% endfor %}
+     </ul>
+ </div>
+ </li>
+ {% endfor %}
+ </ul>
+ {% comment %}
+		 <h3>All Projects</h3>
+		  <ul class="accordion">
+			  {% for i in object_list %}
+			  <li>
+				  <div class="title">
+					  <h3>{{ i.title }}</h3>
+					  <ul>
+					  {% for i in i.team %}
+					  <li>
+						  <span class="has-tip" title="{{ member.user.first_name }} {{ i.user.last_name }}"><img src="http://www.gravatar.com/avatar/{{ i.user.email|md5 }}" alt="{{ i.user.first_name }} {{ i.user.last_name }}"></span>
+					  </li>
+					  {% endfor %}
+				  	</ul>
+				  </div>
+				  <div class="content">
+					 <p>{{ i.description|truncatechars:300 }} <a href="{% url 'projects:view_project' i.slug %}">Visit Project</a></p>
+				  </div>
+			  </li>
+			  {% endfor %}
+      </ul>
+      {% endcomment %}
+	  </div>
+</div>
+{% endblock content %}

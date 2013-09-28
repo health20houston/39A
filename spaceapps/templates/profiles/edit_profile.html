@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns">
+		<form method="post">
+			{% csrf_token %}
+			{{ form.non_field_errors }}
+			<div class="other_data row">
+				<div class="data twelve columns">
+					Looking to change your registration to a different venue, or can no longer attend ? <a href="{% url 'registration:edit' %}">Change your Event</a> or <a href="{% url 'registration:delete' %}">Delete your Account</a>
+					<fieldset>
+						<legend>A little bit of information about you</legend>
+						<div class="field row">
+		  				 	<div class="six columns field">
+								<label for="id_first_name">First name: *</label>
+			  					 {{ form.first_name }}
+								 {{ form.first_name.errors }}
+			  			 	</div>
+
+				   			<div class="six columns field">
+								<label for="id_last_name">Last name: *</label>
+				   				 {{ form.last_name }}
+								 {{ form.last_name.errors }}
+				   			 </div>
+						 </div>
+						 <div class="field row">
+							 <div class="twelve columns">
+		 						 <label for="id_email">E-mail: *</label>
+		 					 	{{ form.email }}
+		 					 	{{ form.email.errors }}
+							</div>
+						</div>
+						<div class="field row">
+							<div class="twelve columns">
+								<a href="/account/password/change/">Change your password</a>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset>
+						<legend>Should other people be allowed to contact you?</legend>
+						<div class="field row">
+							<div class="one column">
+								<input id="id_allow_contact" name="allow_contact" type="checkbox" checked>
+							</div>
+							<div class="eleven columns">
+								<label for="id_allow_contact">Allow other participants to contact me</label>
+							</div>
+							{{ form.allow_contact.errors }}
+						</div>
+					</fieldset>
+					<fieldset>
+						<legend>What kind of experience do you have</legend>
+						<div class="field row">
+							<div class="twelve columns">
+								<label for="id_background">Background: *</label>
+								{{ form.background }}
+								{{ form.background.errors }}
+							</div>
+						</div>
+					</fieldset>
+					<fieldset>
+						<legend>Where are you from?</legend>
+						<div class="field">
+							<label for="id_city">City:</label>
+							{{ form.city }}
+							{{ form.city.errors }}
+						</div>
+
+						<div class="field">
+							<label for="id_state">State or Province:</label>
+							{{ form.state }}
+							{{ form.state.errors }}
+						</div>
+
+						<div class="field">
+							<label for="id_country">Country:</label>
+							{{ form.country }}
+							{{ form.country.errors }}
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="row">
+				<div class="twelve columns">
+					<button type="submit" class="button">Submit</button>
+				</div>
+			</div>
+		</form> 
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<form enctype="multipart/form-data" method='post' action=''>                    
+    {% csrf_token %}
+{% for i in form %}
+{{ i.user }}                                                      
+{{ i.check_in }}
+{{ i.test }}
+{% endfor %}
+<input type='submit' class='button' value='Submit'>                           
+</form>
+{% endblock %}

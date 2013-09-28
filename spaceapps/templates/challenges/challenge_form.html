@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ author_form.media.css }}
+
+<div id="content" class="row">
+	<div class="twelve columns challenge edit">
+		
+		<form method='post' action=''>
+			<div id="wysihtml5-toolbar" style="display: none;"><div id="toolbar-styling" class="eight columns"><a data-wysihtml5-command="bold"><i class="icon-bold"></i> bold</a><a data-wysihtml5-command="italic"><i class="icon-italic"></i> italic</a><a data-wysihtml5-command="insertOrderedList"><i class="icon-list-ol"></i> insert ordered list</a>
+			  					 <a data-wysihtml5-command="insertUnorderedList"><i class="icon-list-ul"></i> insert unordered list</a>
+			  					 <a data-wysihtml5-command="createLink"><i class="icon-link"></i> insert link</a>
+			  					 <div data-wysihtml5-dialog="createLink" style="display: none;">
+			  						 <label>
+			  							 Link:
+			  							 <input data-wysihtml5-dialog-field="href" value="http://" class="text">
+			  						 </label>
+			  						 <a data-wysihtml5-dialog-action="save">OK</a> <a data-wysihtml5-dialog-action="cancel">Cancel</a>
+			  					 </div>
+			  				 </div>
+			  				 <div class="two columns offset-by-two">
+			  					 <a data-wysihtml5-action="change_view" href="javascript:;" unselectable="on" class="wysihtml5-action-active" id="htmlswitch">switch to html</a>
+			  				 </div>
+			  			 </div>
+		  {% csrf_token %}
+
+		    {{ form.as_p }}
+
+		  {{ sponsor_form.management_form }}
+		    {% for form in sponsor_form %}
+		      <div id='sponsor'>
+		        {{ form.as_p }}
+		      </div>
+		    {% endfor %}
+		  {{ author_form.management_form }}
+		    {% for form in author_form %}
+		      <div id='author'>
+		        {{ form.as_p }}
+		      </div>
+		    {% endfor %}
+		  {{ data_form.management_form }}
+		    {% for form in data_form %}
+		      <div id='data'>
+		        {{ form.as_p }}
+		      </div>
+		    {% endfor %}
+		  <input type='submit' class='button' value='Submit'>
+		</form>
+	</div>
+</div>
+
+<script src='/static/js/jquery.formset.min.js'></script>
+<script type="text/javascript">
+  $(function() {
+    $('#sponsor').formset({ 
+      prefix: '{{ sponsor_form.prefix }}' 
+    }); 
+    $('#author').formset({
+      prefix: '{{ author_form.prefix }}',
+      added: function(row) {
+                        bindSelectables($(row));
+                }
+    });
+    $('#data').formset({ 
+      prefix: '{{ data_form.prefix }}' 
+    }); 
+  })
+</script>
+{{ author_form.media.js }}
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery.slugify.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function () {
+	$('input#id_slug').slugify('input#id_title');
+}); 
+		
+</script>
+
+<script src="/static/js/wysihtml5/advanced.js"></script>
+<script src="/static/js/wysihtml5/wysihtml5-0.3.0.min.js"></script>
+<script>
+var editor = new wysihtml5.Editor("id_description", { // id of textarea element
+  toolbar:      "wysihtml5-toolbar", // id of toolbar element
+  parserRules:  wysihtml5ParserRules // defined in parser rules set 
+});
+</script>
+
+{% endblock %}
+

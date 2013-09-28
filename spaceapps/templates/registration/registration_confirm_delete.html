@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Cancel Registration{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="eight columns">
+		<h2>Cancel Registration</h2>
+	</div>
+</header>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<h3>We're sorry to see you leave!</h3>
+		<p>Are you sure you want to cancel your registration?</p>
+		<form method="POST" action="{{ request.get_full_path }}">
+		  {% csrf_token %}
+		  <input type="submit" class="button" value="I do not want to attend." />
+		  	<a href="/" class="button secondary">I am still planning on attending.</a>
+		</form>
+		You can also <a href="{% url 'registration:edit' %}">edit your registration</a> to attend a different location.
+	</div>
+</div>
+
+{% endblock content %}

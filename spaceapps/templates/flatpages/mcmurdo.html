@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}McMurdo Station{% endblock title %}
+
+{% block og %}
+<meta property="og:title" content="International Space Apps Challenge - Antarctica" />
+<meta property="og:image" content="http://spaceappschallenge.org/static/images/mcmurdo.jpg" />
+<meta property="og:url" content="http://spaceappschallenge.org/location/antarctica }}" />
+<meta property="og:description" content="McMurdo Station (77°51'S, 166°40'E), the main U.S. station in Antarctica, is a coastal station at the southern tip of Ross Island, about 3,864 km (2,415 miles) south of Christchurch, New Zealand, and 1,360 km (850 miles) north of the South Pole. The original station was built in 1955 to 1956 for the International Geophysical Year. Today's station is the primary logistics facility for supply of inland stations and remote field camps, and is also the waste management center for much of the U.S. Antarctic Program. Year-round and summer science projects are supported at McMurdo." />
+{% endblock %}
+
+{% block header_loader %}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
+<![endif]-->
+
+<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+{% endblock header_loader %}
+
+{% block main_classes %}
+class="header_img"
+{% endblock %}
+
+{% block content %}
+
+<header id="page_header" class="row">
+	<img src="/static/images/mcmurdo.jpg" alt="McMurdo Station">
+	<div class="page_info twelve_columns">
+		<div class="page_title row">
+			<div class="twelve columns">
+				<h2>Antarctica</h2>
+			</div>
+		</div>
+		<div class="location_details row">
+			<div class="twelve columns venue">
+				McMurdo Station
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="row location info" id="content">
+	<div class="twelve columns">
+		<div class="row">
+			<div class="eight columns" itemprop="description">
+				{{ flatpage.content }}
+			</div>
+			<div class="four columns location details">
+				<a class="button register full capacity" href="http://www.usap.gov/usapgov/">Winter Has Come - Travel Unvailable</a>
+				<div id="map" style="height: 200px; width:100%;margin-bottom:1em;margin-top:1em;"></div>
+				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+					<h3>Location</h3>
+					<b>McMurdo Station</b><span class="mapit"><a href="http://maps.google.com/maps?q=mcmurdo+station&hl=en&sll=38.893596,-77.014576&sspn=0.736967,0.617294&hnear=McMurdo+Station,+Antarctica&t=m&z=13" target="_blank"><i class="icon-globe"></i>Map it</a></span>
+					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+						Antarctica
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+	
+
+{% block js %}
+<script type="text/javascript">
+	var cloudmadeUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg';
+	var subDomains = ['otile1','otile2','otile3','otile4'];
+	var cloudmade = new L.TileLayer(cloudmadeUrl, {subdomains: subDomains});
+	
+	var center = new L.LatLng(-77.846, 166.676);
+	
+	var map = new L.Map('map', {center: center, zoom: 5, layers : [cloudmade]});
+			
+	
+	L.marker([-77.846, 166.676]).addTo(map);
+	
+			
+	map.attributionControl.setPrefix('');
+	
+	
+	
+</script>
+{% endblock %}

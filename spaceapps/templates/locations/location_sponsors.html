@@ -1,0 +1,20 @@
+{% block content %}
+<h3>Location Sponsors</h3>
+<div class="location_sponsor_list">
+{% for i in object_list|dictsort:"city" %}
+{% if i.slug == "virtual" %}
+{% else %}
+<h4><a href="{% url 'locations:detail' i.slug %}">{{ i.city }}</a></h4>
+{% for i in i.sponsor_set.all %}
+{% if forloop.first %}
+<ul>
+{% endif %}
+<li><a href="{{ i.url }}" target="_blank">{{ i.name }}</a></li>
+{% if forloop.last %}
+</ul>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

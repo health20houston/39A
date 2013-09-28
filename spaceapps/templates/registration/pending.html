@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Email{% endblock title %}
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns register_notice">	
+		<h3><i class="icon-spinner icon-spin"></i> Loading</h3>
+		<p>If your page does not refresh, <a href="/register">Click Here</a>.</p>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+<!--
+window.location = "http:///register"
+//-->
+</script>
+{% endblock %}

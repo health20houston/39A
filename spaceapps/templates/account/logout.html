@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load url from future %}
+
+{% block title %}Sign Out{% endblock title %}
+
+{% block header %}
+<header id="page_header" class="nobanner row">
+	<div class="twelve columns">
+		<h2>Goodbye!</h2>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="row">
+	
+	<div class="six columns">
+		<p>{% trans "You have signed out. If this was in error, don't fret! You can log back in on the right." %}</p>
+	</div>
+	<div class="six columns">
+		<div class="panel">
+		      <h4>Log In</h4>
+			  <form class="login" method="POST" action="{% url 'account_login' %}">
+				  {% csrf_token %}
+				  <label for="id_login">E-mail:</label> <input type="text" placeholder="E-mail address" name="login" id="id_login" class="placeholder">
+				  <label for="id_password">Password:</label> <input type="password" placeholder="Password" name="password" id="id_password" class="placeholder">
+				  <label for="id_remember">Remember Me:</label> <input type="checkbox" name="remember" id="id_remember">
+				  <a href="/account/password/reset/">Forgot Password?</a>
+				  <button class="primaryAction" type="submit">Sign In</button>
+			  </form>
+			  {% if redirect_field_value %}
+			  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+			  {% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

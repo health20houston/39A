@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+
+{% block title %}Select a Location{% endblock title %}
+
+{% block og %}
+{% endblock %}
+
+{% block header_loader %}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
+<![endif]-->
+
+<script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+{% endblock header_loader %}
+
+
+{% block header %}
+
+<header id="page_header" class="nobanner row">
+	<div class="twelve columns">
+		<h2>Select a Location</h2>
+	</div>
+</header>
+
+{% endblock header %}
+
+
+{% block content %}
+<div id="content" class="row uncontain">
+	
+	{% for i in highlight %}
+	<div class="featured_choice twelve columns" itemscope itemtype="http://schema.org/Event">
+		<div class="row">
+			<div class="four columns">
+				<img src="{% if i.image %}/media/{{ i.image }}{% else %}/static/images/default.jpg{% endif %}" alt="{{ i.city }}">
+			</div>
+			<div class="eight columns">
+				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+					<div itemprop="address" class="{% if i.state %}raise{% endif %}" itemscope itemtype="http://schema.org/PostalAddress">
+						{% if i.city %}<h3 class="locale" itemprop="addressLocality">{{ i.city }}</h3>{% endif %}
+						{% if i.state %}<span class="locale" itemprop="addressRegion">{{ i.state }}</span>, {% endif %}
+						{% if i.get_country_display %}<span class="locale" itemprop="addressCountry">{{ i.get_country_display }}</span>{% endif %}
+					</div>
+					<div class="venue">
+						<span itemprop="name"><i class="icon-map-marker"></i>{{ i.name }}</span>
+						<span itemprop="startDate" content="2013-04-20T09:00"><i class="icon-calendar"></i>April 20 - 21, 2013</span>
+						{% if not i.open %}<span class="status closed"><i class="icon-lock"></i>Registration Opens Soon</span>
+						{% elif i.is_full %}<span class="status full"><i class="icon-minus-sign"></i>Event Full - Waitlist Available</span>
+						{% elif i.open %}<span class="status open"><i class="icon-ok-sign"></i>Registration Open!</span>{% endif %}
+					</div>
+				</div>
+				<br>
+				<a class="button register large {% if not i.open %}closed{% elif i.is_full %}capacity{% elif i.open %}open{% endif %}" href="{% if not i.open %}#{% elif i.is_full %}#{% elif i.open %}/register/{{ i.slug }}{% endif %}">{% if not i.open %}Registration Closed{% elif i.is_full %}<span id="waitlistButton-{{ i.slug }}">Event Full</span>{% elif i.open %}I want to attend Space Apps {{ i.city }}{% endif %}</a>
+			</div>
+		</div>
+	</div>
+				
+		{% endfor %}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="filtering_selectors twelve columns">
+		<div class="row">
+			<div class="six columns">
+				Want to go elsewhere? Select a location below.
+				{% comment %}
+				<input id="filter_country" type="text" style="margin: 0 auto;" data-provide="typeahead" data-source="[{% for i in object_list %}"{{ i.get_country_display }}",{% endfor %}]">
+				<script>
+				$('#filter_country').typeahead();
+				</script>
+				{% endcomment %}
+			</div>
+			<div class="six columns">
+				<dl class="location tabs pill">
+				  <dd class="active"><a href="#grid"><i class="icon-th"></i> Grid</a></dd>
+				  <dd><a href="#list"><i class="icon-list"></i> List</a></dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<ul class="tabs-content">
+	  <li class="active" id="gridTab">
+	  	<ul class="block_array block-grid three-up mobile">
+	  		<li itemscope itemtype="http://schema.org/Event">
+	  			<a class="main" href="/register/virtual" itemprop="url">
+	  				<img src="/static/images/default.jpg" alt="Virtual Participation">
+	  				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+	  					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+	  						<h3 class="locale" itemprop="addressLocality">Virtual Participation</h3>
+							<span class="locale">Planet Earth</span>
+	  					</div>
+	  					<div class="venue">
+	  						<span itemprop="name"><i class="icon-map-marker"></i>Anywhere You Choose</span>
+	  						<span itemprop="startDate" content="2013-04-20T09:00"><i class="icon-calendar"></i>April 20 - 21, 2013</span>
+							<span class="status open"><i class="icon-ok-sign"></i>Registration Open!</span>
+	  					</div>
+	  				</div>
+	  				<button class="button register full open">Sign me up to attend</button>
+					
+				
+	  			</a>
+	  		</li>
+	  		{% for i in object_list|dictsort:"city" %}
+			{% if i.name != "Virtual Participation" %}
+	  		<li itemscope itemtype="http://schema.org/Event">
+	  			<a class="main" href="{% if not i.open %}#{% elif i.is_full %}#{% elif i.open %}/register/{{ i.slug }}{% endif %}" {% if i.is_full %}id="waitlist-{{ i.slug }}"{% endif %} itemprop="url">
+	  				<img src="{% if i.image %}/media/{{ i.image }}{% else %}/static/images/default.jpg{% endif %}" alt="{{ i.city }}">
+	  				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+	  					<div itemprop="address" class="{% if i.state %}raise{% endif %}" itemscope itemtype="http://schema.org/PostalAddress">
+	  						{% if i.city %}<h3 class="locale" itemprop="addressLocality">{{ i.city }}</h3>{% endif %}
+	  						{% if i.state %}<span class="locale" itemprop="addressRegion">{{ i.state }}</span>, {% endif %}
+	  						{% if i.get_country_display %}<span class="locale" itemprop="addressCountry">{{ i.get_country_display }}</span>{% endif %}
+	  					</div>
+	  					<div class="venue">
+	  						<span itemprop="name"><i class="icon-map-marker"></i>{{ i.name }}</span>
+	  						<span itemprop="startDate" content="2013-04-20T09:00"><i class="icon-calendar"></i>April {{ i.start|date:"j" }} - {{ i.end|date:"j" }}, 2013</span>
+							{% if not i.open %}<span class="status closed"><i class="icon-lock"></i>Registration Opens Soon</span>
+							{% elif i.is_full %}<span class="status full"><i class="icon-minus-sign"></i>Event Full - Waitlist Available</span>
+							{% elif i.open %}<span class="status open"><i class="icon-ok-sign"></i>Registration Open!</span>{% endif %}
+	  					</div>
+	  				</div>
+	  				<button class="button register full {% if not i.open %}closed{% elif i.is_full %}capacity{% elif i.open %}open{% endif %}" {% if i.is_full %}id="waitlistButton-{{ i.slug }}"{% endif %}>{% if not i.open %}Registration Closed{% elif i.is_full %}Sign up for Waitlist{% elif i.open %}Sign me up to attend{% endif %}</button>
+				
+	  			</a>
+	  		</li>
+			{% endif %}
+	  		{% endfor %}
+	  		<li itemscope itemtype="http://schema.org/Event">
+	  			<a class="main" href="/location/iss" itemprop="url">
+	  				<img src="/static/images/iss.jpg" alt="International Space Station">
+	  				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+	  					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+	  						<h3 class="locale" itemprop="addressLocality">Low Earth Orbit</h3>
+							<span class="locale">Space</span>
+	  					</div>
+	  					<div class="venue">
+	  						<span itemprop="name"><i class="icon-map-marker"></i>International Space Station</span>
+	  						<span itemprop="startDate" content="2013-04-20T09:00"><i class="icon-calendar"></i>April 20 - 21, 2013</span>
+							<span class="status full"><i class="icon-fighter-jet"></i>Transportation Not Provided</span>
+	  					</div>
+	  				</div>
+	  				<button class="button register full">Astronauts Only</button>
+					
+				
+	  			</a>
+	  		</li>
+			
+	  		<li itemscope itemtype="http://schema.org/Event">
+	  			<a class="main" href="/location/antarctica" itemprop="url">
+	  				<img src="/static/images/mcmurdo.jpg" alt="McMurdo Station">
+	  				<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+	  					<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+	  						<h3 class="locale" itemprop="addressLocality">Antarctica</h3>
+							<span class="locale">Earth</span>
+	  					</div>
+	  					<div class="venue">
+	  						<span itemprop="name"><i class="icon-map-marker"></i>McMurdo Station</span>
+	  						<span itemprop="startDate" content="2013-04-20T09:00"><i class="icon-calendar"></i>April 20 - 21, 2013</span>
+							<span class="status full"><i class="icon-beaker"></i>Winter has Come</span>
+	  					</div>
+	  				</div>
+	  				<button class="button register full">No Flights Until Summer</button>
+					
+				
+	  			</a>
+	  		</li>
+			
+			
+	  	</ul>
+	  </li>
+	  <li id="listTab">
+		<ul class="block-grid three-up">
+			<li>
+				<h3>Africa</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "AF" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>Antarctica</h3>
+				<ul>
+					<li><a href="/location/antarctica">McMurdo Station</a></li>
+				</ul>
+			</li>
+			<li>
+				<h3>Asia</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "AS" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>Australasia</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "AU" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>Europe</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "EU" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>North America</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "NA" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>South America</h3>
+				<ul>
+					{% for i in object_list|dictsort:"city" %}
+						{% if i.continent == "SA" %}<li><a href="/register/{{ i.slug }}">{% if i.city %}{{ i.city }},{% endif %}{% if i.get_country_display %} {{ i.get_country_display }}{% endif %}</a>{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h3>Low Earth Orbit</h3>
+				<ul>
+					<li><a href="/location/ISS">International Space Station</a></li>
+				</ul>
+			</li>
+		</ul>
+	  </li>
+	</ul>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script>
+{% for i in object_list %}
+{% if i.is_full %}
+$("#waitlist-{{ i.slug }}").click(function() {
+	$.get("/register/{{ i.slug }}/waitlist");
+	$("#waitlistButton-{{i.slug}}").text("You have been waitlisted!")
+});
+{% endif %}
+{% endfor %}
+</script>
+{% endblock %}
+

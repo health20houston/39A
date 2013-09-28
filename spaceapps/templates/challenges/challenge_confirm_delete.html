@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Delete{% endblock title %}
+
+{% block content %}
+<div id="content" class="row">
+	<div class="twelve columns">
+
+		Are you sure?
+		<form method="POST" action="{{ request.get_full_path }}">
+		  {% csrf_token %}
+		  <input type="submit" value="Yes" />
+		</form>
+		<a href="{{ object.get_absolute_url }}">No</a>
+	</div>
+</div>
+
+{% endblock content %}

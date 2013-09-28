@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Awards{% endblock title %}
+{% block main_classes %}
+class="header_img"
+{% endblock %}
+
+{% block content %}
+{% comment %}
+{% for i in globalawards %}
+{{ i }}
+{% endfor %}
+{% endcomment %}
+
+<header id="page_header" class="spacer row">
+	<img src="/static/images/7.png" alt="Awards">
+	<div class="page_info twelve_columns">
+		<div class="page_title row">
+			<div class="twelve columns">
+				<h2>Awards</h2>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div id="content" class="row">
+	<div class="twelve columns">
+		<dl class="location tabs pill">  
+		  {% if request.user.is_staff %}
+		  <dd><a href="/awards/admin"><i class="icon-magic"></i> Admin</a></dd>
+		  {% endif %}
+		</dl>
+		<h3>Global Nominations</h3>
+		<p>The administration side of the platform provides local event leads the opportunity to nominate top solutions to go to local judging. Those project pages are linked here by location, allowing interested readers to click through to view the nominated projects. </p>
+		{% regroup nominations|dictsort:"location.city" by location as globalnomination %}
+		{% for i in globalnomination %}
+		<h4>{{ i.grouper.city }}</h4>
+			{% for i in i.list %}
+            <a href="{% url 'projects:view_project' i.project.slug %}">{{ i.project.title }}</a>{% comment %} {% if i.project.hashtag %}{% if not i.project.remove_from_judging %}<span class="success label"><a href="">Vote</a></span>{% endif %}{% endif %}{% endcomment %}<br>
+			{% endfor %}
+			{% if i.grouper.slug == 'virtual' %}
+			
+			{% endif %}
+			<hr>
+		{% endfor %}
+		<h3>Local Awards</h3>
+		<p>If your leads also offer local awards at your collaboration, those can be denoted in the backend as well, and listed here. Those project pages are linked here by location, allowing interested readers to click through to view the nominated projects and providing a consolidated list of all awardees in one location. </p>
+
+			{% regroup localawards|dictsort:"location.city" by location as awards %}
+			{% for i in awards %}
+			<h4>{{ i.grouper.city }}</h4>
+			<b>Received Local Award</b><br>
+			{% for i in i.list %}
+			<em>{{ i.title }}</em> - <a href="{% url 'projects:view_project' i.project.slug %}">{{ i.project.title }}</a><br>
+			{% endfor %}
+			<hr>
+			{% endfor %}
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+{% endblock %}
+
+
