@@ -23,83 +23,43 @@
 class="notop homepage"
 {% endblock %}
 {% block content %}
-<div class="map_container">
-<div id="map" class="map_header"></div>
-{% comment %}
-<button class="button" id="btn_fullscreen" onclick="goFullscreen('map'); return false"><i class="icon-fullscreen"></i></button>
-{% endcomment %}
-</div>
-<div id="content" class="row">
-	<div id="homerun" class="twelve columns">
-		<div class="row">                                                           
-		    <div class="twelve columns call">   
-			    <h3>39A</h3>                                      
-		        <p>39A is an online collaboration platform designed to help your community take ‘giant leaps’ forward in addressing your challenges and meeting your mission goals. Easily customizable with your own graphics and branding, the platform is an inspirational launch pad for your collaborations!</p>
-		    </div>                                                                    
-	    </div>
-		<div class="row">
-			<div class="seven columns">
-				<h3>Wonders of the Unknown</h3>
-				<p class="proj-desc">As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore . . . and this is exploration at its greatest.</p>
-				<a href="#" class="button">Read more about this featurette</a>
-			</div>
-			<div class="five columns">
-				<div class="video flex-video widescreen">
-					<iframe width="560" height="315" src="//www.youtube.com/embed/KaOC9danxNo" frameborder="0" allowfullscreen></iframe>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="five columns image">
-				<img src="/static/images/1.png" alt="">
-			</div>
-			<div class="seven columns">
-				<h3>A Round Earth</h3>
-				<p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
-				<a href="#" class="button">See this featurette</a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="seven columns">
-				<h3>Earth from Space</h3>
-				<p>The Earth was small, light blue, and so touchingly alone, our home that must be defended like a holy relic. The Earth was absolutely round. I believe I never knew what the word round meant until I saw Earth from space.</p>
-				<a href="#" class="button">See this featurette</a>
-			</div>
-			<div class="five columns image">
-				<img src="/static/images/2.png" alt="">
-			</div>
-		</div>
-		<div class="row">
-			<div class="five columns">
-				<img src="/static/images/3.png" alt="">
-			</div>
-			<div class="seven columns">
-				<h3>Path of a Cosmonaut</h3>
-				<p>The path of a cosmonaut is not an easy, triumphant march to glory. You have to get to know the meaning not just of joy but also of grief, before being allowed in the spacecraft cabin.</p>
-				<a href="#" class="button">See this featurette</a>
-			</div>
-		</div>
-		<div class="row blog">
-			<div class="twelve columns">
-				<h3>Updates</h3>
-			</div>						 
-			 <ol id="tumblrfeed" class="row">
-			 </ol>
-			 <div class="twelve columns read_more">
-				 <a href="//#">Read More Updates</a>
-			 </div>
-		</div>
-	</div>
-</div>
+
+
+
+            <h1 class="centered light">
+                Collaborate with astronauts to tackle space travel's most intriguing health problems.
+            </h1>
+            <h3 class="centered light">
+                Join us on February 7th - 9th and dive in with experienced engineers, programmers, designers and scientists.
+            </h3>
+
+            <div class="centered apply-scholarship">
+                <a role="button" href="http://missiontomarshealth.com/student-scholarships/" class="button large">
+                    Apply for Student Weekend Pass
+                </a>
+            </div>
+        </div>
+        <div class="five columns offset-by-one">
+            <a href="http://www.enventure.org"><img src="/static/images/spacehealth/en.png" class="img-responsive"></a>
+        </div>
+        <div class="five columns left">
+            <a href="http://www.health20houston.com"><img src="/static/images/spacehealth/h20.jpg" class="img-responsive"></a>
+
+
+
+
+
+<!--
+
 
 {% for i in locations %}
 <div id="{{ i.slug }}Modal" class="reveal-modal streaming-modal large">
-	<div class="loading">
-	<i class="icon-spinner icon-spin"></i>Loading...
-	</div>
-	<a class="close-reveal-modal">&#215;</a>
+    <div class="loading">
+    <i class="icon-spinner icon-spin"></i>Loading...
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
 </div>
-{% endfor %}
+{% endfor %} -->
 
 {% endblock content %}
 
@@ -118,161 +78,140 @@ project_iteration = 0;
 number_of_projects = {{ peoples_choice|length }};
 
 function voteboxAdjust() {
-	project_height = $('#vote_project').height();
-	current_roulette_min_height = $('#vote_roulette').height();
-	window_width = $(window).width();
-	if (window_width < 770) {
-		$('div#vote_roulette').css({"min-height": project_height + 75, "background-color": "#000000"});
-		$('#content').css({"top": project_height + 100, "position": "absolute"});
-	}
-	else if (window_width > 770) {
-		$('div#vote_roulette').css({"min-height": "", "background-color": ""});
-		$('#content').css({"top": "", "position": ""});
-	}
+    project_height = $('#vote_project').height();
+    current_roulette_min_height = $('#vote_roulette').height();
+    window_width = $(window).width();
+    if (window_width < 770) {
+        $('div#vote_roulette').css({"min-height": project_height + 75, "background-color": "#000000"});
+        $('#content').css({"top": project_height + 100, "position": "absolute"});
+    }
+    else if (window_width > 770) {
+        $('div#vote_roulette').css({"min-height": "", "background-color": ""});
+        $('#content').css({"top": "", "position": ""});
+    }
 }
 
 $(document).ready(function() {
-		$('#vote_project').load('/project/'+ projects[project_iteration] +'/votebox', function() {
-			voteboxAdjust();
-		});
+        $('#vote_project').load('/project/'+ projects[project_iteration] +'/votebox', function() {
+            voteboxAdjust();
+        });
 });
 
 $(window).resize(function() {
-	voteboxAdjust();
+    voteboxAdjust();
 });
 
 $("#vote_roulette").on("click", 'a#next_project', function(event){
-		$('#vote_project').load('/project/'+ projects[project_iteration++] +'/votebox');
+        $('#vote_project').load('/project/'+ projects[project_iteration++] +'/votebox');
 });
 $("#vote_roulette span.close").click(function() {
-	$('#vote_roulette').hide();
+    $('#vote_roulette').hide();
 });
 </script>
 {% endcomment %}
 <script>
-var cloudmadeUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg';
-	            var subDomains = ['otile1','otile2','otile3','otile4'];
-	            var cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 11, subdomains: subDomains});
+// var cloudmadeUrl = 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg';
+//              var subDomains = ['otile1','otile2','otile3','otile4'];
+//              var cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 11, subdomains: subDomains});
 
-				var center = new L.LatLng(-2.10, 13);
-				
+//              var center = new L.LatLng(-2.10, 13);
 
-			    var $window = $(window);
-				    function checkWidth() {
-				        var windowsize = $window.width();
-						zoom = 0;
-				        if (windowsize > 480) {
-							zoom = 2;
-				        }
-				        if (windowsize < 480) {
-				            zoom = 1;
-				        }
-						return zoom;
-				    }
-				    // Execute on load
-					checkWidth();
-											
-				var map = new L.Map('map', {center: center, zoomControl: false, zoom: [zoom], layers : [cloudmade]});
-				map.dragging.disable();
-				map.touchZoom.disable();
-				map.doubleClickZoom.disable();
-				map.scrollWheelZoom.disable();
-				map.boxZoom.disable();
-				map.keyboard.disable();
-				map.attributionControl.setPrefix('');
-				
-				var venueIcon = L.divIcon({className: 'venue-location-drop'});
-		            {% for i in locations %}
-					{% if i.name != "Virtual Participation" %}
-					var lat{{ i.city|md5 }}icon = L.divIcon({className: 'venue-location-drop lat{{ i.city|md5 }}'});
-					var lat{{ i.city|md5 }} = L.marker([{{ i.lat }}, {{ i.lon }}], {icon: lat{{ i.city|md5 }}icon}).addTo(map);
-					$(lat{{i.city|md5}}).hover(
-						function () {
-							$("div.lat{{ i.city|md5 }}").html("{{ i.city }}").addClass("ontop");
-						},
-						function () {
-							$("div.lat{{ i.city|md5 }}").html("").removeClass("ontop");
-						}
-					);
-					$(lat{{ i.city|md5 }}).click(function() {
-						window.location = '/location/{{ i.slug }}';
-					});
-					{% endif %}
-		            {% endfor %}					
-							
-			    var iss
-			        , timeElapsed = 0;
 
-			   function update_position() {
-			       elapsedTime = new Date().getMilliseconds();
+//              var $window = $(window);
+//                  function checkWidth() {
+//                      var windowsize = $window.width();
+//                      zoom = 0;
+//                      if (windowsize > 480) {
+//                          zoom = 2;
+//                      }
+//                      if (windowsize < 480) {
+//                          zoom = 1;
+//                      }
+//                      return zoom;
+//                  }
+//                  // Execute on load
+//                  checkWidth();
 
-			       $.getJSON('http://open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
-			           var latitude = data["data"]["iss_position"]["latitude"];
-			           var longitude = data["data"]["iss_position"]["longitude"];
+//              var map = new L.Map('map', {center: center, zoomControl: false, zoom: [zoom], layers : [cloudmade]});
+//              map.dragging.disable();
+//              map.touchZoom.disable();
+//              map.doubleClickZoom.disable();
+//              map.scrollWheelZoom.disable();
+//              map.boxZoom.disable();
+//              map.keyboard.disable();
+//              map.attributionControl.setPrefix('');
 
-			           elapsedTime = new Date().getMilliseconds() - elapsedTime;
-					   
-					   var issIcon = L.icon({
-					       iconUrl: '/static/images/spacestation_icon.png',
+//              var venueIcon = L.divIcon({className: 'venue-location-drop'});
+//                  {% for i in locations %}
+//                  {% if i.name != "Virtual Participation" %}
+//                  var lat{{ i.city|md5 }}icon = L.divIcon({className: 'venue-location-drop lat{{ i.city|md5 }}'});
+//                  var lat{{ i.city|md5 }} = L.marker([{{ i.lat }}, {{ i.lon }}], {icon: lat{{ i.city|md5 }}icon}).addTo(map);
+//                  $(lat{{i.city|md5}}).hover(
+//                      function () {
+//                          $("div.lat{{ i.city|md5 }}").html("{{ i.city }}").addClass("ontop");
+//                      },
+//                      function () {
+//                          $("div.lat{{ i.city|md5 }}").html("").removeClass("ontop");
+//                      }
+//                  );
+//                  $(lat{{ i.city|md5 }}).click(function() {
+//                      window.location = '/location/{{ i.slug }}';
+//                  });
+//                  {% endif %}
+//                  {% endfor %}
 
-					       iconSize:     [105, 74], // size of the icon
-					       iconAnchor:   [50, 37], // point of the icon which will correspond to marker's location
-					       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-					   });
-					   
-			           if (!iss) {
-			               iss = L.marker([latitude,longitude], {icon: issIcon}).addTo(map);
-			           }
-			           iss.setLatLng([latitude,longitude]).update();
-			           setTimeout(update_position, 1000 - elapsedTime);
-			       });
-			   }
+//              var iss
+//                  , timeElapsed = 0;
 
-			   update_position();
+//             function update_position() {
+//                 elapsedTime = new Date().getMilliseconds();
+
+//                 $.getJSON('http://open-notify-api.herokuapp.com/iss-now.json?callback=?', function(data) {
+//                     var latitude = data["data"]["iss_position"]["latitude"];
+//                     var longitude = data["data"]["iss_position"]["longitude"];
+
+//                     elapsedTime = new Date().getMilliseconds() - elapsedTime;
+
+//                     var issIcon = L.icon({
+//                         iconUrl: '/static/images/spacestation_icon.png',
+
+//                         iconSize:     [105, 74], // size of the icon
+//                         iconAnchor:   [50, 37], // point of the icon which will correspond to marker's location
+//                         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+//                     });
+
+//                     if (!iss) {
+//                         iss = L.marker([latitude,longitude], {icon: issIcon}).addTo(map);
+//                     }
+//                     iss.setLatLng([latitude,longitude]).update();
+//                     setTimeout(update_position, 1000 - elapsedTime);
+//                 });
+//             }
+
+//             update_position();
 </script>
-<script type="text/javascript">
-//Tumblr retrieval
-$.getJSON("//spaceapps.tumblr.com/api/read/json?callback=?&num=3&tagged=update", 
-  function(data) {
-    $.each(data.posts, function(i,posts){
-      var title = this["regular-title"]; 
-      var type = this.type; 
-      var date = this.date;
-      var url = this["url-with-slug"];
-	  var text = this["regular-body"];
-	  var img = $(text).html();
-	  if(img.indexOf('src') === -1)
-	  {
-	    $('#tumblrfeed').prepend('<li class="four columns"><a href="' + url +'"><img src="" class="outline" alt=""><h4>' + title + '</h4></a></li>'); 
-	  }
-	  else {
-	    $('#tumblrfeed').prepend('<li class="four columns"><a href="' + url +'">' + img + '<h4>' + title + '</h4></a></li>');
-		$('#tumblrfeed img').addClass('outline');
-	  }
-    });
- });
-     </script>
-	 {% comment %}
- 	<script type="text/javascript">
- 	  function goFullscreen(id) {
- 	    // Get the element that we want to take into fullscreen mode
- 	    var element = document.getElementById(id);
-    
- 	    // These function will not exist in the browsers that don't support fullscreen mode yet, 
- 	    // so we'll have to check to see if they're available before calling them.
-    
- 	    if (element.mozRequestFullScreen) {
- 	      // This is how to go into fullscren mode in Firefox
- 	      // Note the "moz" prefix, which is short for Mozilla.
- 	      element.mozRequestFullScreen();
- 	    } else if (element.webkitRequestFullScreen) {
- 	      // This is how to go into fullscreen mode in Chrome and Safari
- 	      // Both of those browsers are based on the Webkit project, hence the same prefix.
- 	      element.webkitRequestFullScreen();
- 	   }
- 	   // Hooray, now we're in fullscreen mode!
- 	  }
- 	</script>
-	{% endcomment %}
-	<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+
+     {% comment %}
+    <script type="text/javascript">
+      function goFullscreen(id) {
+        // Get the element that we want to take into fullscreen mode
+        var element = document.getElementById(id);
+
+        // These function will not exist in the browsers that don't support fullscreen mode yet, 
+        // so we'll have to check to see if they're available before calling them.
+
+        if (element.mozRequestFullScreen) {
+          // This is how to go into fullscren mode in Firefox
+          // Note the "moz" prefix, which is short for Mozilla.
+          element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullScreen) {
+          // This is how to go into fullscreen mode in Chrome and Safari
+          // Both of those browsers are based on the Webkit project, hence the same prefix.
+          element.webkitRequestFullScreen();
+       }
+       // Hooray, now we're in fullscreen mode!
+      }
+    </script>
+    {% endcomment %}
+    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 {% endblock js %}

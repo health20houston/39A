@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+gem 'chunky_png', '1.2.7'
+gem 'compass', '0.12.2'
+gem 'modular-scale', '1.0.6'
+gem 'rake', '10.0.3'
+gem 'sass', '3.2.7'
+gem 'sassy-math', '1.5'
+gem 'zurb-foundation', '3.2.5'
